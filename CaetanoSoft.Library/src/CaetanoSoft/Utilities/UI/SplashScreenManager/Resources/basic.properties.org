@@ -1,0 +1,138 @@
+# This properties file is used to create a PropertyResourceBundle
+# It contains Locale specific strings used in Swing
+# Currently, the following components need this for support:
+#
+#    AbstractButton
+#    AbstractDocument
+#    ColorChooser
+#    ComboBox
+#    FileChooser
+#    FormView
+#    InternalFrame
+#    InternalFrameTitlePane
+#    IsindexView
+#    OptionPane
+#    PrintingDialog
+#    ProgressMonitor
+#    SplitPane
+#
+# When this file is read in, the strings are put into the 
+# defaults table.  This is an implementation detail of the current
+# workings of Swing Basic v1.6.06.  DO NOT DEPEND ON THIS.  
+# This may change in future versions of Swing as we improve localization 
+# support.
+#
+# @author José Caetano Silva (jcaetano@users.sourceforge.net)
+
+############ ABSTRACT BUTTON STRINGS #############
+AbstractButton.clickText=click
+
+############ ABSTRACT DOCUMENT STRINGS #############
+AbstractDocument.additionText=addition
+AbstractDocument.deletionText=deletion
+AbstractDocument.redoText=Redo
+AbstractDocument.styleChangeText=style change
+AbstractDocument.undoText=Undo
+AbstractUndoableEdit.redoText=Redo
+AbstractUndoableEdit.undoText=Undo
+
+############ COLOR CHOOSER STRINGS #############
+ColorChooser.cancelText=Cancel
+ColorChooser.hsbBlueText=B
+ColorChooser.hsbBrightnessText=B
+ColorChooser.hsbGreenText=G
+ColorChooser.hsbHueText=H
+ColorChooser.hsbNameText=HSB
+ColorChooser.hsbRedText=R
+ColorChooser.hsbSaturationText=S
+ColorChooser.okText=OK
+ColorChooser.previewText=Preview
+ColorChooser.resetText=Reset
+ColorChooser.rgbBlueText=Blue
+ColorChooser.rgbGreenText=Green
+ColorChooser.rgbNameText=RGB
+ColorChooser.rgbRedText=Red
+ColorChooser.sampleText=Sample Text  Sample Text
+ColorChooser.swatchesNameText=Swatches
+ColorChooser.swatchesRecentText=Recent:
+
+############ COMBO BOX STRINGS #############
+ComboBox.togglePopupText=togglePopup
+
+############ FILE CHOOSER STRINGS #############
+FileChooser.acceptAllFileFilterText=All Files
+FileChooser.cancelButtonText=Cancel
+FileChooser.cancelButtonToolTipText=Abort file chooser dialog
+FileChooser.directoryDescriptionText=Directory
+FileChooser.directoryOpenButtonText=Open
+FileChooser.directoryOpenButtonToolTipText=Open selected directory
+FileChooser.fileDescriptionText=Generic File
+FileChooser.fileSizeGigaBytes={0} GB
+FileChooser.fileSizeKiloBytes={0} KB
+FileChooser.fileSizeMegaBytes={0} MB
+FileChooser.helpButtonText=Help
+FileChooser.helpButtonToolTipText=FileChooser help
+FileChooser.newFolderErrorSeparator=: 
+FileChooser.newFolderErrorText=Error creating new folder
+FileChooser.openButtonText=Open
+FileChooser.openButtonToolTipText=Open selected file
+FileChooser.openDialogTitleText=Open
+FileChooser.other.newFolder.subsequent=NewFolder.{0}
+FileChooser.other.newFolder=NewFolder
+FileChooser.saveButtonText=Save
+FileChooser.saveButtonToolTipText=Save selected file
+FileChooser.saveDialogTitleText=Save
+FileChooser.updateButtonText=Update
+FileChooser.updateButtonToolTipText=Update directory listing
+FileChooser.win32.newFolder.subsequent=New Folder ({0})
+FileChooser.win32.newFolder=New Folder
+
+############ FORM VIEW STRINGS #############
+FormView.browseFileButtonText=Browse...
+FormView.resetButtonText=Reset
+FormView.submitButtonText=Submit Query
+
+############ INTERNAL FRAME STRINGS #############
+InternalFrame.closeButtonToolTip=Close
+InternalFrame.iconButtonToolTip=Minimize
+InternalFrame.maxButtonToolTip=Maximize
+InternalFrame.restoreButtonToolTip=Restore
+
+############ INTERNAL FRAME TITLE PANE STRINGS #############
+InternalFrameTitlePane.closeButtonAccessibleName=Close
+InternalFrameTitlePane.closeButtonText=Close
+InternalFrameTitlePane.iconifyButtonAccessibleName=Iconify
+InternalFrameTitlePane.maximizeButtonAccessibleName=Maximize
+InternalFrameTitlePane.maximizeButtonText=Maximize
+InternalFrameTitlePane.minimizeButtonText=Minimize
+InternalFrameTitlePane.moveButtonText=Move
+InternalFrameTitlePane.restoreButtonText=Restore
+InternalFrameTitlePane.sizeButtonText=Size
+
+############ IS INDEX VIEW STRINGS #############
+IsindexView.prompt=This is a searchable index.  Enter search keywords:
+
+############ OPTION PANE STRINGS #############
+OptionPane.cancelButtonText=Cancel
+OptionPane.inputDialogTitle=Input
+OptionPane.messageDialogTitle=Message
+OptionPane.noButtonText=No
+OptionPane.okButtonText=OK
+OptionPane.titleText=Select an Option
+OptionPane.yesButtonText=Yes
+
+############ PRINTING DIALOG STRINGS #############
+PrintingDialog.abortButtonText=Abort
+PrintingDialog.abortButtonToolTipText=Abort Printing
+PrintingDialog.contentAbortingText=Printing aborting...
+PrintingDialog.contentInitialText=Printing in progress...
+PrintingDialog.contentProgressText=Printed page {0}...
+PrintingDialog.titleAbortingText=Printing (Aborting)
+PrintingDialog.titleProgressText=Printing
+
+############ PROGRESS MONITOR STRINGS #############
+ProgressMonitor.progressText=Progress...
+
+############ SPLIT PANE STRINGS #############
+SplitPane.leftButtonText=left button
+SplitPane.rightButtonText=right button

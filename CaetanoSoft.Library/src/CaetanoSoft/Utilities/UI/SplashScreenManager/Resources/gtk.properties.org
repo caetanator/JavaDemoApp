@@ -1,0 +1,46 @@
+# This properties file is used to create a PropertyResourceBundle
+# It contains Locale specific strings used in Swing
+# Currently, the following components need this for support:
+#
+#    FileChooser
+#    GTKColorChooserPanel
+#
+# When this file is read in, the strings are put into the 
+# defaults table.  This is an implementation detail of the current
+# workings of Swing GTK v1.6.06.  DO NOT DEPEND ON THIS.  
+# This may change in future versions of Swing as we improve localization 
+# support.
+#
+# @author José Caetano Silva (jcaetano@users.sourceforge.net)
+
+############ FILE CHOOSER STRINGS #############
+FileChooser.acceptAllFileFilterText=All Files
+FileChooser.cancelButtonText=Cancel
+FileChooser.cancelButtonToolTipText=Abort file chooser dialog.
+FileChooser.deleteFileButtonText=Delete File
+FileChooser.filesLabelText=Files
+FileChooser.filterLabelText=Filter:
+FileChooser.foldersLabelText=Folders
+FileChooser.newFolderButtonText=New Folder
+FileChooser.newFolderDialogText=Folder name:
+FileChooser.openButtonText=OK
+FileChooser.openButtonToolTipText=Open selected file.
+FileChooser.openDialogTitleText=Open
+FileChooser.pathLabelText=Selection:
+FileChooser.renameFileButtonText=Rename File
+FileChooser.renameFileDialogText=Rename file \"{0}\" to
+FileChooser.renameFileErrorText=Error renaming file \"{0}\" to \"{1}\"
+FileChooser.renameFileErrorTitle=Error 
+FileChooser.saveButtonText=OK
+FileChooser.saveButtonToolTipText=Save selected file.
+FileChooser.saveDialogTitleText=Save
+
+############ GTK COLOR CHOOSER PANEL STRINGS #############
+GTKColorChooserPanel.blueText=Blue:
+GTKColorChooserPanel.colorNameText=Color Name:
+GTKColorChooserPanel.greenText=Green:
+GTKColorChooserPanel.hueText=Hue:
+GTKColorChooserPanel.nameText=GTK Color Chooser
+GTKColorChooserPanel.redText=Red:
+GTKColorChooserPanel.saturationText=Saturation:
+GTKColorChooserPanel.valueText=Value:
