@@ -40,12 +40,13 @@ import javax.swing.filechooser.FileView;
 
 import CaetanoSoft.Utilities.Path.PathUtils;
 import CaetanoSoft.Utilities.Print.PrintUtils;
-import CaetanoSoft.Utilities.Translation.Translation_PT;
+import CaetanoSoft.Utilities.Translation.TranslationUtil;
 import CaetanoSoft.Utilities.UI.FileChooserFilter;
 import CaetanoSoft.Utilities.UI.FileChooserView;
 import CaetanoSoft.Utilities.UI.FileChooserHelper;
 import CaetanoSoft.Utilities.UI.SplashScreenManager.SplashScreenManager;
 import CaetanoSoft.Utilities.UI.IconUtils;
+import java.util.Locale;
 
 
 /**
@@ -452,11 +453,15 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
      * @param args  The command line parameters
      */
     public static void main(String args[]) {
-        Runnable runner = new Runnable() {
+        Runnable runner;
+        runner = new Runnable() {
             @Override
             public void run() {
                 // Swing translations
-                final Translation_PT translations = Translation_PT.getInstance();
+                final TranslationUtil translations = TranslationUtil.getInstance();
+                String strLang = Locale.getDefault().toString();
+                TranslationUtil.translateLanguage(strLang);
+                
                 // Splash Screen Manager
                 final SplashScreenManager ssManager = SplashScreenManager.getInstance();
                 if (ssManager != null)
@@ -500,8 +505,8 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
                 ssManager.close();
                 frame.setVisible(true);
                 frame.toFront();
-         }
-       };
+            }
+        };
 
        EventQueue.invokeLater(runner);
     }

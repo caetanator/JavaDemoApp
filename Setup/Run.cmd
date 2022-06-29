@@ -14,7 +14,7 @@ Rem Set LF=com.sun.java.swing.plaf.windows.WindowsClassicLookAndFeel
 Rem Set LF=com.sun.java.swing.plaf.gtk.GTKLookAndFeel
 Rem Set LF=com.sun.java.swing.plaf.mac.MacLookAndFeel
 Rem Set LF=com.sun.java.swing.plaf.motif.MotifLookAndFeel
-Rem Set LF=com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel
+Rem Set LF=javax.swing.plaf.nimbus.NimbusLookAndFeel
 Rem Set LF=javax.swing.plaf.metal.MetalLookAndFeel
 
 Rem Java Language

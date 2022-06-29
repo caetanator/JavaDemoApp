@@ -102,13 +102,13 @@ public class SplashScreenManager {
             try {
                 splash = SplashScreen.getSplashScreen();
                 if (splash == null) {
-                    System.err.println("SplashScreen.getSplashScreen() returned null");
+                    System.err.println("ERROR: SplashScreen could't find the image in 'SplashScreen-Image' property of the manifest file!");
                 }
                 else {
                     try {
                         graphics = splash.createGraphics();
                         if (graphics == null) {
-                            System.err.println("splash.createGraphics() returned null");
+                            System.err.println("ERROR: SplashScreen could't create a Graphics2D object!");
                         }
                         else {
                             if (progressBarRet != null) {

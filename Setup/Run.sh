@@ -16,7 +16,7 @@ export PATH
 #LF="-Dswing.defaultlaf=com.sun.java.swing.plaf.gtk.GTKLookAndFeel"
 #LF="-Dswing.defaultlaf=com.sun.java.swing.plaf.mac.MacLookAndFeel"
 #LF="-Dswing.defaultlaf=com.sun.java.swing.plaf.motif.MotifLookAndFeel"
-#LF="-Dswing.defaultlaf=com.sun.java.swing.plaf.nimbus.NimbusLookAndFeel"
+#LF="-Dswing.defaultlaf=javax.swing.plaf.nimbus.NimbusLookAndFeel
 #LF="-Dswing.defaultlaf=javax.swing.plaf.metal.MetalLookAndFeel"
 
 # Java Language
