@@ -1,13 +1,13 @@
 //******************************************************************************
 // Project: Splash Screen Manager v1.00
-// URL:     http://slam.sourceforge.net
+// URL:     http://slam.sourceforgevent.net
 // File:    DemoApp.java
 //
 // Description:
 //          Example of use of the SplashScreenManager Java class.
 //
 // Copyright (C) 2008:
-//          José Caetano Silva (jcaetano@users.sourceforge.net)
+//          José Caetano Silva (jcaetano@users.sourceforgevent.net)
 //
 // License:
 //          This file is part of Splash Screen Manager.
@@ -34,6 +34,8 @@ import java.awt.event.*;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.logging.Logger;
+import java.util.Locale;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
@@ -46,26 +48,82 @@ import CaetanoSoft.Utilities.UI.FileChooserView;
 import CaetanoSoft.Utilities.UI.FileChooserHelper;
 import CaetanoSoft.Utilities.UI.SplashScreenManager.SplashScreenManager;
 import CaetanoSoft.Utilities.UI.IconUtils;
-import java.util.Locale;
 
 
 /**
  * This class can take a variable number of parameters on the command
- * line. Program execution begins with the main() method. The class
+ * linevent. Program execution begins with the main() method. The class
  * constructor is not invoked unless a window frame of type 
  * 'DemoApp' is created in the main() method.
  * 
- * @author  José Caetano Silva (jcaetano@users.sourceforge.net)
+ * @author  José Caetano Silva (jcaetano@users.sourceforgevent.net)
  * 
  * @version 1.00, 2008-06-10
  * 
  * @since   1.00
  */
-public class DemoApp extends JFrame implements WindowListener, ActionListener {
+public class DemoApp extends JFrame implements WindowListener, ActionListener
+{
+    // Exit error codes
+    /**
+     * The application terminated normaly, without errors.
+     */
+    private static final int EXIT_OK = 0;
+    /**
+     * The application terminated abnormaly, with a Java exception.
+     */
+    private static final int EXIT_ERROR_EXCEPTION = -1;
+    /**
+     * The application terminated abnormaly, because the number of parameters is wrong.
+     */
+    private static final int EXIT_ERROR_BAD_NUMBER_PARAMETERS = 1;
+    /**
+     * The application terminated abnormaly, because one parameter is wrong.
+     */
+    private static final int EXIT_ERROR_BAD_PARAMETER = 2;
+    /**
+     * The application terminated abnormaly, because one parameter duplicated.
+     */
+    private static final int EXIT_ERROR_PARAMETER_DUPLICATED = 3;
+    /**
+     * The application terminated abnormaly, because the configuration file was not found.
+     */
+    private static final int EXIT_ERROR_BAD_CONFIG_FILE = 4;
+    
+    // Debug levels
+    private static final int DEBUG_LEVEL_NONE    = 0x00000000;
+    private static final int DEBUG_LEVEL_ERROR   = 0x00000001;
+    private static final int DEBUG_LEVEL_WARNING = 0x00000002;
+    private static final int DEBUG_LEVEL_INFO    = 0x00000004;
+    private static final int DEBUG_LEVEL_ALL     = 0xFFFFFFFF;
+    
+    // Java class serial version UID
     private static final long serialVersionUID = 7424066865309990219L;
-
+    
     // Internacional resourses support
-    private final ResourceBundle m_ResourcesBundle = ResourceBundle.getBundle("CaetanoSoft.DemoApp.Resources.sdResources", getLocale());
+    private final ResourceBundle resourceBundle = ResourceBundle.getBundle("CaetanoSoft.DemoApp.Resources.sdResources", getLocale());
+    
+    // Application debuggin data
+    /**
+     * Nevel of debuggin: 
+     *  0 => Off;
+     *  1 => Errors (default value);
+     *  2 => Warnings;
+     *  3 => Information;
+     * -1 => All.
+     */
+    private static int fLogLevel = DEBUG_LEVEL_ERROR;
+    
+    /**
+     * Objecto para o output do logger de erros/avisos/debugging
+     */
+    private static Logger objLogger = null;
+    
+    // Configuração
+    /**
+     * Caminho completo do ficheiro de configuração.
+     */
+    private static String strConfigFile = "DemoApp.properties";
 
     /**
      * Menu objects.
@@ -92,61 +150,62 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
      * <p>
      * Creates the frame window of the demo.
      */
-    public DemoApp() {
+    public DemoApp()
+    {
         super();
         
         // menuFileOpen
-        menuFileOpen.setText(m_ResourcesBundle.getString("MenuFileOpen_T"));
-        menuFileOpen.setToolTipText(m_ResourcesBundle.getString("MenuFileOpen_TT"));
-        menuFileOpen.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuFileOpen_MN"));
-        //menuFileOpen.setAccelerator((KeyStroke)m_ResourcesBundle.getObject("MenuFileOpen_AK"));
+        menuFileOpen.setText(resourceBundle.getString("MenuFileOpen_T"));
+        menuFileOpen.setToolTipText(resourceBundle.getString("MenuFileOpen_TT"));
+        menuFileOpen.setMnemonic((Integer)resourceBundle.getObject("MenuFileOpen_MN"));
+        //menuFileOpen.setAccelerator((KeyStroke)resourceBundle.getObject("MenuFileOpen_AK"));
         menuFileOpen.addActionListener(this);
         
         // menuFileSave
-        menuFileSave.setText(m_ResourcesBundle.getString("MenuFileSave_T"));
-        menuFileSave.setToolTipText(m_ResourcesBundle.getString("MenuFileSave_TT"));
-        menuFileSave.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuFileSave_MN"));
-        //menuFileSave.setAccelerator(KeyStroke.getKeyStroke(m_ResourcesBundle.getString("MenuFileSave_AK")));
+        menuFileSave.setText(resourceBundle.getString("MenuFileSave_T"));
+        menuFileSave.setToolTipText(resourceBundle.getString("MenuFileSave_TT"));
+        menuFileSave.setMnemonic((Integer)resourceBundle.getObject("MenuFileSave_MN"));
+        //menuFileSave.setAccelerator(KeyStroke.getKeyStroke(resourceBundle.getString("MenuFileSave_AK")));
         menuFileSave.addActionListener(this);
         
         // menuFilePrint
-        menuFilePrint.setText(m_ResourcesBundle.getString("MenuFilePrint_T"));
-        menuFilePrint.setToolTipText(m_ResourcesBundle.getString("MenuFilePrint_TT"));
-        menuFilePrint.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuFilePrint_MN"));
-        menuFilePrint.setAccelerator(KeyStroke.getKeyStroke(m_ResourcesBundle.getString("MenuFilePrint_AK")));
+        menuFilePrint.setText(resourceBundle.getString("MenuFilePrint_T"));
+        menuFilePrint.setToolTipText(resourceBundle.getString("MenuFilePrint_TT"));
+        menuFilePrint.setMnemonic((Integer)resourceBundle.getObject("MenuFilePrint_MN"));
+        menuFilePrint.setAccelerator(KeyStroke.getKeyStroke(resourceBundle.getString("MenuFilePrint_AK")));
         menuFilePrint.addActionListener(this);
         
         // menuFileExit
-        menuFileExit.setText(m_ResourcesBundle.getString("MenuFileExit_T"));
-        menuFileExit.setToolTipText(m_ResourcesBundle.getString("MenuFileExit_TT"));
-        menuFileExit.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuFileExit_MN"));
-        //menuFileExit.setAccelerator(KeyStroke.getKeyStroke(m_ResourcesBundle.getString("MenuFileExit_AK")));
+        menuFileExit.setText(resourceBundle.getString("MenuFileExit_T"));
+        menuFileExit.setToolTipText(resourceBundle.getString("MenuFileExit_TT"));
+        menuFileExit.setMnemonic((Integer)resourceBundle.getObject("MenuFileExit_MN"));
+        //menuFileExit.setAccelerator(KeyStroke.getKeyStroke(resourceBundle.getString("MenuFileExit_AK")));
         menuFileExit.addActionListener(this);
         
         // menuEditColor
-        menuEditColor.setText(m_ResourcesBundle.getString("MenuEditColor_T"));
-        menuEditColor.setToolTipText(m_ResourcesBundle.getString("MenuEditColor_TT"));
-        menuEditColor.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuEditColor_MN"));
-        //menuEditColor.setAccelerator(KeyStroke.getKeyStroke(m_ResourcesBundle.getString("MenuEditColor_AK")));
+        menuEditColor.setText(resourceBundle.getString("MenuEditColor_T"));
+        menuEditColor.setToolTipText(resourceBundle.getString("MenuEditColor_TT"));
+        menuEditColor.setMnemonic((Integer)resourceBundle.getObject("MenuEditColor_MN"));
+        //menuEditColor.setAccelerator(KeyStroke.getKeyStroke(resourceBundle.getString("MenuEditColor_AK")));
         menuEditColor.addActionListener(this);
          
         // menuHelpLicense
-        menuHelpLicense.setText(m_ResourcesBundle.getString("MenuHelpLicense_T"));
-        menuHelpLicense.setToolTipText(m_ResourcesBundle.getString("MenuHelpLicense_TT"));
-        menuHelpLicense.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuHelpLicense_MN")); 
-        //menuHelpLicense.setAccelerator((KeyStroke)m_ResourcesBundle.getObject("MenuHelpLicense_AK"));     
+        menuHelpLicense.setText(resourceBundle.getString("MenuHelpLicense_T"));
+        menuHelpLicense.setToolTipText(resourceBundle.getString("MenuHelpLicense_TT"));
+        menuHelpLicense.setMnemonic((Integer)resourceBundle.getObject("MenuHelpLicense_MN")); 
+        //menuHelpLicense.setAccelerator((KeyStroke)resourceBundle.getObject("MenuHelpLicense_AK"));     
         menuHelpLicense.addActionListener(this);
         
         // menuHelpAbout
-        menuHelpAbout.setText(m_ResourcesBundle.getString("MenuHelpAbout_T"));
-        menuHelpAbout.setToolTipText(m_ResourcesBundle.getString("MenuHelpAbout_TT"));
-        menuHelpAbout.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuHelpAbout_MN"));
-        menuHelpAbout.setAccelerator(KeyStroke.getKeyStroke(m_ResourcesBundle.getString("MenuHelpAbout_AK")));
+        menuHelpAbout.setText(resourceBundle.getString("MenuHelpAbout_T"));
+        menuHelpAbout.setToolTipText(resourceBundle.getString("MenuHelpAbout_TT"));
+        menuHelpAbout.setMnemonic((Integer)resourceBundle.getObject("MenuHelpAbout_MN"));
+        menuHelpAbout.setAccelerator(KeyStroke.getKeyStroke(resourceBundle.getString("MenuHelpAbout_AK")));
         menuHelpAbout.addActionListener(this);
         
         // menuFile
-        menuFile.setText(m_ResourcesBundle.getString("MenuFile_T"));
-        menuFile.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuFile_MN"));
+        menuFile.setText(resourceBundle.getString("MenuFile_T"));
+        menuFile.setMnemonic((Integer)resourceBundle.getObject("MenuFile_MN"));
         menuFile.add(menuFileOpen);
         menuFile.addSeparator();
         menuFile.add(menuFileSave);
@@ -156,14 +215,14 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
         menuFile.add(menuFileExit);
         
         // menuEdit
-        menuEdit.setText(m_ResourcesBundle.getString("MenuEdit_T"));
-        menuEdit.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuEdit_MN"));
+        menuEdit.setText(resourceBundle.getString("MenuEdit_T"));
+        menuEdit.setMnemonic((Integer)resourceBundle.getObject("MenuEdit_MN"));
         menuEdit.addSeparator();
         menuEdit.add(menuEditColor);
                 
         // menuHelp
-        menuHelp.setText(m_ResourcesBundle.getString("MenuHelp_T"));
-        menuHelp.setMnemonic((Integer)m_ResourcesBundle.getObject("MenuHelp_MN"));
+        menuHelp.setText(resourceBundle.getString("MenuHelp_T"));
+        menuHelp.setMnemonic((Integer)resourceBundle.getObject("MenuHelp_MN"));
         menuHelp.add(menuHelpLicense);
         menuHelp.addSeparator();
         menuHelp.add(menuHelpAbout);
@@ -175,7 +234,7 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
         //menuBar.setHelpMenu(menuHelp);
         
         // labelHello
-        labelHello.setText(m_ResourcesBundle.getString("LabelHello_T"));
+        labelHello.setText(resourceBundle.getString("LabelHello_T"));
         labelHello.setVerticalTextPosition(JLabel.CENTER);
         labelHello.setHorizontalTextPosition(JLabel.CENTER);
         labelHello.setVerticalAlignment(JLabel.CENTER);
@@ -201,45 +260,55 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
     /**
      * Handles the menu events.
      * 
-     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent e)
+     * @param event
+     * @see java.awt.event.ActionListener#actionPerformed(ActionEvent event)
      */
     @Override
-    public void actionPerformed(ActionEvent e) {
-        Object objSource = e.getSource();
+    public void actionPerformed(ActionEvent event)
+    {
+        Object objSource = event.getSource();
         // Menu Items
-		if (objSource instanceof JMenuItem) {
+	if (objSource instanceof JMenuItem)
+        {
             JMenuItem m = (JMenuItem)objSource;
-            if (m.equals(menuFileOpen)) {
+            if (m.equals(menuFileOpen))
+            {
                 doMenuFileOpen();
                 return;
             }
             
-            if (m.equals(menuFileSave)) {
+            if (m.equals(menuFileSave))
+            {
                 doMenuFileSave();
                 return;
             }
 
-			if (m.equals(menuFilePrint)) {
+            if (m.equals(menuFilePrint))
+            {
                 doMenuFilePrint();
                 return;
             }
             
-            if (m.equals(menuFileExit)) {
+            if (m.equals(menuFileExit))
+            {
                 doMenuFileExit();
                 return;
             }
             
-            if (m.equals(menuEditColor)) {
+            if (m.equals(menuEditColor))
+            {
                 doMenuEditColor();
                 return;
             }
             
-            if (m.equals(menuHelpLicense)) {
+            if (m.equals(menuHelpLicense))
+            {
                 doMenuHelpLicense();
                 return;
             }
             
-            if (m.equals(menuHelpAbout)) {
+            if (m.equals(menuHelpAbout))
+            {
                 doMenuHelpAbout();
                 return;
             }
@@ -250,10 +319,13 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
     /**
      * Frame window is opened.
      * 
-     * @see java.awt.event.WindowListener#windowOpened(WindowEvent e)
+     * @param event
+     * @see java.awt.event.WindowListener#windowOpened(WindowEvent event)
      */
     @Override
-    public void windowOpened(WindowEvent e) {
+    public void windowOpened(WindowEvent event)
+    {
+        // Do nothing
     }
     
     /**
@@ -261,13 +333,17 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
      * <p>
      * Call <i>dispose()</i> to confirm window destruction.
      *  
-     * @see java.awt.event.WindowListener#windowClosing(WindowEvent e)
+     * @param event
+     * @see java.awt.event.WindowListener#windowClosing(WindowEvent event)
      */
     @Override
-    public void windowClosing(WindowEvent e){
-        if (e.getWindow().equals(this)) {
-            int i = JOptionPane.showConfirmDialog(this, m_ResourcesBundle.getString("MBCheckExit_T"), this.getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-            if (i == JOptionPane.YES_OPTION) {
+    public void windowClosing(WindowEvent event)
+    {
+        if (event.getWindow().equals(this))
+        {
+            int i = JOptionPane.showConfirmDialog(this, resourceBundle.getString("MBCheckExit_T"), this.getTitle(), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+            if (i == JOptionPane.YES_OPTION)
+            {
                 this.setVisible(false);
                 this.dispose();
             }
@@ -279,55 +355,72 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
      * <p>
      * Call <i>System.exit()</i> to exit the application.
      * 
-     * @see java.awt.event.WindowListener#windowClosed(WindowEvent e)
+     * @param event
+     * @see java.awt.event.WindowListener#windowClosed(WindowEvent event)
      */
     @Override
-    public void windowClosed(WindowEvent e) {
-        if (e.getWindow().equals(this)) {
+    public void windowClosed(WindowEvent event)
+    {
+        if (event.getWindow().equals(this))
+        {
             this.setVisible(false);
-            System.exit(0);
+            System.exit(EXIT_OK);
         }
     };
 
     /**
      * Frame window is activated.
      * 
-     * @see java.awt.event.WindowListener#windowActivated(WindowEvent e)
+     * @param event
+     * @see java.awt.event.WindowListener#windowActivated(WindowEvent event)
      */
     @Override
-    public void windowActivated(WindowEvent e) {
+    public void windowActivated(WindowEvent event)
+    {
+        // Do nothing
     }
 
     /**
      * Frame window is deactivated.
      * 
-     * @see java.awt.event.WindowListener#windowDeactivated(WindowEvent e)
+     * @param event
+     * @see java.awt.event.WindowListener#windowDeactivated(WindowEvent event)
      */
     @Override
-    public void windowDeactivated(WindowEvent e) {
+    public void windowDeactivated(WindowEvent event)
+    {
+        // Do nothing
     }
 
     /**
      * Frame window is iconified.
      * 
-     * @see java.awt.event.WindowListener#windowIconified(WindowEvent e)
+     * @param event
+     * @see java.awt.event.WindowListener#windowIconified(WindowEvent event)
      */
     @Override
-    public void windowIconified(WindowEvent e) {
+    public void windowIconified(WindowEvent event)
+    {
+        // Do nothing
     }
 
     /**
      * Frame window is deiconified.
-     * @see java.awt.event.WindowListener#windowDeiconified(WindowEvent e)
+     * 
+     * @param event
+     * @see java.awt.event.WindowListener#windowDeiconified(WindowEvent event)
      */
     @Override
-    public void windowDeiconified(WindowEvent e) {
+    public void windowDeiconified(WindowEvent event)
+    {
+        // Do nothing
     }
     
     /**
      * Executes de Menu File Open.
      */
-    private void doMenuFileOpen() {
+    private void doMenuFileOpen()
+    {
         String strOpenPath = PathUtils.getApplicationPath(this);
         String[] strExtentions1 = {"txt"};
         String[] strExtentions2 = {"c", "cpp", "h", "hpp"};
@@ -345,7 +438,8 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
         // Select the file(s)
         File[] files = FileChooserHelper.showFileOpenDialog((JFrame)this, "Open a File", strOpenPath, false, JFileChooser.FILES_ONLY, true, fileFilters, fileViews);
 
-        if (files != null && files.length > 0) {
+        if (files != null && files.length > 0)
+        {
             // Set's the wait application cursor
             this.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             // Do stuff
@@ -356,21 +450,25 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
     }
     
     /**
-     * Executes de Menu File Save.
+     * Executes de Menu File Savevent.
      */
-    private void doMenuFileSave() {
+    private void doMenuFileSave()
+    {
         String strOpenPath = PathUtils.getApplicationPath(this);
-        String strFile = "SaveMe.txt";
+        String strFile = "SaveMevent.txt";
         String[] strExtentions = {"txt"};
         FileFilter fileFilter = new FileChooserFilter(strExtentions, "Text file");
         FileView fileView = new FileChooserView(strExtentions, "Text file type", IconUtils.createImageIcon(this, "Resources/pngIcon.png"));
 
         File file = FileChooserHelper.showFileSaveDialog((JFrame)this, "Save a File", strOpenPath, strFile, true, fileFilter, fileView);
 
-        if (file != null) {
-            if (file.exists()) {
-                int n = JOptionPane.showConfirmDialog(this, "O ficheiro já existe.\nDeseja substituir-lo?", "Erro Ficheiro Existente", JOptionPane.YES_NO_OPTION);
-                if (n == JOptionPane.NO_OPTION) {
+        if (file != null)
+        {
+            if (file.exists())
+            {
+                int n = JOptionPane.showConfirmDialog(this, "O ficheiro já existevent.\nDeseja substituir-lo?", "Erro Ficheiro Existente", JOptionPane.YES_NO_OPTION);
+                if (n == JOptionPane.NO_OPTION)
+                {
                     // Set's the normal/arrow application cursor
                     this.setCursor(Cursor.getDefaultCursor());
                     updateMainMenu();
@@ -389,7 +487,8 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
     /**
      * Executes de Menu File Print
      */
-    private void doMenuFilePrint() {
+    private void doMenuFilePrint()
+   {
             PrintUtils.printComponent(labelHello);
 
             /*
@@ -411,14 +510,16 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
     /**
      * Executes de Menu File Exit
      */
-    private void doMenuFileExit() {
+    private void doMenuFileExit()
+    {
         dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
     }
     
     /**
      * Executes de Menu Edit Color
      */
-    private void doMenuEditColor() {
+    private void doMenuEditColor()
+    {
         Color newColor = JColorChooser.showDialog(this, "Choose Background Color", labelHello.getBackground());
         labelHello.setBackground(newColor);
         labelHello.setOpaque(true);
@@ -428,7 +529,8 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
     /**
      * Executes de Menu Help License
      */
-    private void doMenuHelpLicense() {
+    private void doMenuHelpLicense()
+    {
         JOptionPane.showMessageDialog(this, 
                 "Splash Demo is licensed under the GNU General Public License version 3.\n" + 
                 "For more information, please visit www.gnu.org.\n\n" +
@@ -439,12 +541,14 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
     /**
      * Executes de Menu Help About
      */
-    private void doMenuHelpAbout() {
+    private void doMenuHelpAbout()
+    {
         JOptionPane.showMessageDialog(this, "CaetanoSoft\nSplash Demo v1.00", this.getTitle(), JOptionPane.INFORMATION_MESSAGE);
     }
     
-    private void updateMainMenu() {
-        
+    private void updateMainMenu()
+    {
+        // Do nothing
     }
     
     /**
@@ -452,11 +556,14 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
      * 
      * @param args  The command line parameters
      */
-    public static void main(String args[]) {
+    public static void main(String args[])
+    {
         Runnable runner;
-        runner = new Runnable() {
+        runner = new Runnable()
+        {
             @Override
-            public void run() {
+            public void run()
+            {
                 // Swing translations
                 final TranslationUtil translations = TranslationUtil.getInstance();
                 String strLang = Locale.getDefault().toString();
@@ -476,28 +583,35 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
                     ssManager.setBarRectangle(new Rectangle(15, 170, 270, 15));
                     ssManager.setBarColor(Color.GREEN);
                     ssManager.setBarBackground(Color.WHITE);
+                    
                     ssManager.render("Loading Java Base Classes...", 50);
-                    // Do nothing
-                    try {
+                    try
+                    {
                         Thread.sleep(1000);
                     }
-                    catch(InterruptedException e) {
+                    catch(InterruptedException ex)
+                    {
+                        // Do nothing
                     }
 
                     ssManager.render("Connecting to SQL DB...", 60);
-                    // Do nothing
-                    try {
+                    try
+                    {
                         Thread.sleep(1000);
                     }
-                    catch(InterruptedException e) {
+                    catch(InterruptedException ex)
+                    {
+                        // Do nothing
                     }
 
                     ssManager.render("Creating GUI...", 95);
-                    // Do nothing
-                    try {
+                    try
+                    {
                         Thread.sleep(1000);
                     }
-                    catch(InterruptedException e) {
+                    catch(InterruptedException ex)
+                    {
+                        // Do nothing
                     }
                 }
                 JFrame frame = new DemoApp();
@@ -509,5 +623,72 @@ public class DemoApp extends JFrame implements WindowListener, ActionListener {
         };
 
        EventQueue.invokeLater(runner);
+    }
+    
+    /**
+     * Exit the Java application with an error code and message sended to <i>stderr</i> 
+     * or the logging file.
+     * 
+     * @param iExitCode     Error code
+     * @param strMessage    Error mensage
+     */
+    private static void doExit(int iExitCode, String strMessage)
+    {
+        if ((fLogLevel & (DEBUG_LEVEL_INFO | DEBUG_LEVEL_WARNING | DEBUG_LEVEL_ERROR)) != 0)
+        {
+            if(objLogger != null)
+            {
+                if((fLogLevel & DEBUG_LEVEL_INFO) != 0)
+                {
+                    objLogger.entering(DemoApp.class.getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+                }
+                objLogger.severe("" + strMessage);
+                objLogger.severe("Ended with error " + iExitCode + "!");
+            }
+            else
+            {
+                System.err.println("DemoApp: Ended with error " + iExitCode + ", " + strMessage + "!");
+            }
+        }
+
+        System.exit(iExitCode);
+    }
+    
+    /**
+     * Prints the use of the command, with the respective parameters.
+     */
+    public static void printUsage()
+    {
+        if(objLogger != null)
+        {
+            if((fLogLevel & DEBUG_LEVEL_INFO) != 0)
+            {
+                objLogger.entering(DemoApp.class.getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+            }
+        }
+        
+        System.out.println("");
+        System.out.println("(c) 2008-2022 José Caetno Silva / CaetanoSoft");
+        System.out.println("");
+        System.out.println("Usage:");
+        System.out.println("\t[|JAVA|] DemoApp.jar [-h]");
+        System.out.println("\t[|JAVA|] DemoApp.jar");
+        System.out.println("");
+        System.out.println("Return Codes:");
+        System.out.println("\t  0: OK");
+        System.out.println("\t -1: Error: Java Exception");
+        System.out.println("\t  1: Error: Invalid number of parameters");
+        System.out.println("\t  2: Error: Invalid parameter");
+        System.out.println("\t  3: Error: Duplicated parameter");
+        System.out.println("\t  4: Error: Configuration file not found or invalid");
+        System.out.println("");
+
+        if(objLogger != null)
+        {
+            if((fLogLevel & DEBUG_LEVEL_INFO) != 0)
+            {
+                objLogger.exiting(DemoApp.class.getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+            }
+        }
     }
 }

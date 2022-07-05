@@ -1,3 +1,34 @@
+//******************************************************************************
+// Project: CaetanoSoft.Library
+// URL:     https://github.com/caetanator/JavaDemoApp/
+// File:    PrintUtils.java
+//
+// Description:
+//          This class handles the printing of an arbitrary Java GUI component.
+//
+//          It's base on the code of:
+//              7/99 Marty Hall, http://www.apl.jhu.edu/~hall/java/
+//
+// Copyright (C) 2008-2022:
+//          José Caetano Silva / CaetanoSoft
+//
+// License:
+//          This file is part of CaetanoSoft.Library.
+//
+//          CaetanoSoft.Library is free software: you can redistribute it and/or modify
+//          it under the terms of the GNU General Public License as published by
+//          the Free Software Foundation, either version 3 of the License, or
+//          (at your option) any later version.
+//
+//          CaetanoSoft.Library is distributed in the hope that it will be useful,
+//          but WITHOUT ANY WARRANTY; without even the implied warranty of
+//          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//          GNU General Public License for more details.
+//
+//          You should have received a copy of the GNU General Public License
+//          along with CaetanoSoft.Library.  If not, see <http://www.gnu.org/licenses/>.
+//******************************************************************************
+
 package CaetanoSoft.Utilities.Print;
 
 import java.awt.*;
@@ -12,90 +43,125 @@ import javax.print.attribute.standard.MediaSizeName;
 import javax.print.attribute.standard.OrientationRequested;
 import javax.swing.*;
 
-/** A simple utility class that lets you very simply print
- *  an arbitrary component. Just pass the component to the
- *  PrintUtilities.printComponent. The component you want to
- *  print doesn't need a print method and doesn't have to
- *  implement any interface or do anything special at all.
- *  <P>
- *  If you are going to be printing many times, it is marginally more 
- *  efficient to first do the following:
- *  <PRE>
-    PrintUtils printHelper = new PrintUtils(theComponent);
-  </PRE>
-  then later do printHelper.print(). But this is a very tiny
-  difference, so in most cases just do the simpler
-  PrintUtils.printComponent(componentToBePrinted).
-
-  7/99 Marty Hall, http://www.apl.jhu.edu/~hall/java/
-  May be freely used or adapted.
+/**
+ * This class handles the printing of an arbitrary Java GUI component.
+ * <p>
+ * It's base on the code of:<br>
+ * <&nbsp;><&nbsp;><&nbsp;><&nbsp;>7/99 Marty Hall, http://www.apl.jhu.edu/~hall/java/
+ * 
+ * @author José Caetano Silva
+ * @version 1.2.0, 2022-07-04
+ * @since   1.0
  */
+public class PrintUtils implements Printable
+{
+    /**
+     * The Java GUI component to be printed.
+     */
+    private Component componentToBePrinted;
 
-public class PrintUtils implements Printable {
-	// The component to be printed
-	private Component componentToBePrinted;
-
-  public static void printComponent(Component c) {
-    new PrintUtils(c).print();
-  }
-  
-  public PrintUtils(Component componentToBePrinted) {
-
-    this.componentToBePrinted = componentToBePrinted;
-  }
-
-	public void print() {
-
-		/*PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
-		PrintService svc = PrintServiceLookup.lookupDefaultPrintService();
-		PrintRequestAttributeSet attrs = new HashPrintRequestAttributeSet();
-		PrintService selection = ServiceUI.printDialog(null, 100, 100, services, svc, null, attrs);*/
-
-
-    PrinterJob printJob = PrinterJob.getPrinterJob();
-	PageFormat pf = printJob.defaultPage();
-    printJob.setPrintable(this, pf);
-	PrintRequestAttributeSet attr = new HashPrintRequestAttributeSet();
-	attr.add(MediaSizeName.ISO_A4);
-	attr.add(OrientationRequested.PORTRAIT);
-	attr.add(new Copies(1));
-    if (printJob.printDialog(attr))
-      try {
-        printJob.print();
-      } catch(PrinterException pe) {
-        System.out.println("Error printing: " + pe);
-      }
-  }
-
-	@Override
-  public int print(Graphics g, PageFormat pageFormat, int pageIndex) {
-    if (pageIndex > 0) {
-      return Printable.NO_SUCH_PAGE;
+    /**
+     * Print the Java GUI component.
+     * 
+     * @param comp  The Java GUI component to be printed
+     */
+    public static void printComponent(Component comp)
+    {
+        new PrintUtils(comp).print();
     }
-	else {
-      Graphics2D g2d = (Graphics2D)g;
-      g2d.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
-      disableDoubleBuffering(componentToBePrinted);
-      componentToBePrinted.paint(g2d);
-      enableDoubleBuffering(componentToBePrinted);
-      return Printable.PAGE_EXISTS;
+
+    /**
+     * 
+     * @param comp  The Java GUI component to be printed
+     */
+    public PrintUtils(Component comp)
+    {
+        this.componentToBePrinted = comp;
     }
-  }
 
-  /** The speed and quality of printing suffers dramatically if
-   *  any of the containers have double buffering turned on.
-   *  So this turns if off globally.
-   *  @see enableDoubleBuffering
-   */
-  public static void disableDoubleBuffering(Component c) {
-    RepaintManager currentManager = RepaintManager.currentManager(c);
-    currentManager.setDoubleBufferingEnabled(false);
-  }
+    /**
+     * Print the Java GUI component.
+     */
+    public void print()
+    {
 
-  /** Re-enables double buffering globally. */
-  
-  public static void enableDoubleBuffering(Component c) {
-    RepaintManager currentManager = RepaintManager.currentManager(c);
-    currentManager.setDoubleBufferingEnabled(true);
-  }
+        /*PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
+        PrintService svc = PrintServiceLookup.lookupDefaultPrintService();
+        PrintRequestAttributeSet attrs = new HashPrintRequestAttributeSet();
+        PrintService selection = ServiceUI.printDialog(null, 100, 100, services, svc, null, attrs);*/
+
+        PrinterJob printJob = PrinterJob.getPrinterJob();
+        PageFormat pageFormat = printJob.defaultPage();
+        printJob.setPrintable(this, pageFormat);
+        PrintRequestAttributeSet attr = new HashPrintRequestAttributeSet();
+        attr.add(MediaSizeName.ISO_A4);
+        attr.add(OrientationRequested.PORTRAIT);
+        attr.add(new Copies(1));
+        if (printJob.printDialog(attr))
+        {
+            try
+            {
+                printJob.print();
+            }
+            catch(PrinterException printEx)
+            {
+                System.out.println("Error printing: " + printEx);
+            }
+        }
+    }
+
+    /**
+     * 
+     * @see print(Graphics, PageFormat, int)
+     * 
+     * @param graphics
+     * @param pageFormat
+     * @param pageIndex
+     */
+    @Override
+    public int print(Graphics graphics, PageFormat pageFormat, int pageIndex)
+    {
+        if (pageIndex > 0)
+        {
+            return Printable.NO_SUCH_PAGE;
+        }
+        else
+        {
+            Graphics2D graphics2D = (Graphics2D)graphics;
+            graphics2D.translate(pageFormat.getImageableX(), pageFormat.getImageableY());
+            disableDoubleBuffering(componentToBePrinted);
+            componentToBePrinted.paint(graphics2D);
+            enableDoubleBuffering(componentToBePrinted);
+            return Printable.PAGE_EXISTS;
+        }
+    }
+
+    /**
+     * Disables double buffering globally.
+     * The speed and quality of printing suffers dramatically if
+     * any of the containers have double buffering turned on.
+     * So this turns it off globally.
+     *
+     * @see enableDoubleBuffering
+     * 
+     * @param comp  The Java GUI component to be printed 
+     */
+    public static void disableDoubleBuffering(Component comp)
+    {
+        RepaintManager currentManager = RepaintManager.currentManager(comp);
+        currentManager.setDoubleBufferingEnabled(false);
+    }
+
+    /**
+     * Enables double buffering globally.
+     *
+     * @see disableDoubleBuffering
+     * 
+     * @param comp  The Java GUI component to be printed
+     */
+    public static void enableDoubleBuffering(Component comp)
+    {
+        RepaintManager currentManager = RepaintManager.currentManager(comp);
+        currentManager.setDoubleBufferingEnabled(true);
+    }
 }
