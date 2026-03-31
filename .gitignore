@@ -1,9 +1,10 @@
 ﻿/CaetanoSoft.JavaDemoApp/build
+/CaetanoSoft.JavaDemoApp/dist
 /CaetanoSoft.JavaDemoApp/lib
 /CaetanoSoft.JavaDemoApp/test
-﻿/CaetanoSoft.Library/build
+/CaetanoSoft.Library/build
+/CaetanoSoft.Library/dist
 /CaetanoSoft.Library/lib
 /CaetanoSoft.Library/test
 /Setup/JavaPOS
 /Setup/javaComm
-
