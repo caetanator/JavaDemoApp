@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"CaetanoSoft.Utilities.Array"},{"l":"CaetanoSoft.Utilities.Path"},{"l":"CaetanoSoft.Utilities.Print"},{"l":"CaetanoSoft.Utilities.Translation"},{"l":"CaetanoSoft.Utilities.UI"},{"l":"CaetanoSoft.Utilities.UI.SplashScreenManager"}];updateSearchResults();
