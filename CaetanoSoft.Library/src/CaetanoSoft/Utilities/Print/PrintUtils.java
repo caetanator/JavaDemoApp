@@ -9,25 +9,27 @@
 //          It's base on the code of:
 //              7/99 Marty Hall, http://www.apl.jhu.edu/~hall/java/
 //
-// Copyright (C) 2008-2022:
-//          José Caetano Silva / CaetanoSoft
+// Copyright:
+//          © 2008-2022 José Caetano Silva / CaetanoSoft. All rights reserved.
 //
 // License:
 //          This file is part of CaetanoSoft.Library.
 //
-//          CaetanoSoft.Library is free software: you can redistribute it and/or modify
-//          it under the terms of the GNU General Public License as published by
-//          the Free Software Foundation, either version 3 of the License, or
-//          (at your option) any later version.
+//          CaetanoSoft.Library is free software: you can redistribute it and/or 
+//          modify it under the terms of the GNU General Public License as 
+//          published by the Free Software Foundation, either version 3 of the 
+//          License, or (at your option) any later version.
 //
-//          CaetanoSoft.Library is distributed in the hope that it will be useful,
-//          but WITHOUT ANY WARRANTY; without even the implied warranty of
-//          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//          CaetanoSoft.Library is distributed in the hope that it will be 
+//          useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+//          of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //          GNU General Public License for more details.
 //
 //          You should have received a copy of the GNU General Public License
-//          along with CaetanoSoft.Library.  If not, see <http://www.gnu.org/licenses/>.
+//          along with CaetanoSoft.Library. If not, see 
+//          <https://www.gnu.org/licenses/gpl-3.0.html>.
 //******************************************************************************
+
 
 package CaetanoSoft.Utilities.Print;
 
@@ -47,11 +49,11 @@ import javax.swing.*;
  * This class handles the printing of an arbitrary Java GUI component.
  * <p>
  * It's base on the code of:<br>
- * <&nbsp;><&nbsp;><&nbsp;><&nbsp;>7/99 Marty Hall, http://www.apl.jhu.edu/~hall/java/
+ * &nbsp;&nbsp;&nbsp;&nbsp;<a href="http://www.apl.jhu.edu/~hall/java/">7/99 Marty Hall</a>
  * 
  * @author José Caetano Silva
- * @version 1.2.0, 2022-07-04
- * @since   1.0
+ * @version 1.02.0001, 2022-07-04
+ * @since   1.00
  */
 public class PrintUtils implements Printable
 {
@@ -165,3 +167,4 @@ public class PrintUtils implements Printable
         currentManager.setDoubleBufferingEnabled(true);
     }
 }
+

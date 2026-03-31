@@ -6,68 +6,76 @@
 // Description:
 //          This class handles the manipulation of arrays data.
 //
-// Copyright (C) 2008-2022:
-//          José Caetano Silva / CaetanoSoft
+// Copyright:
+//          © 2008-2026 José Caetano Silva / CaetanoSoft. All rights reserved.
 //
 // License:
 //          This file is part of CaetanoSoft.Library.
 //
-//          CaetanoSoft.Library is free software: you can redistribute it and/or modify
-//          it under the terms of the GNU General Public License as published by
-//          the Free Software Foundation, either version 3 of the License, or
-//          (at your option) any later version.
+//          CaetanoSoft.Library is free software: you can redistribute it and/or 
+//          modify it under the terms of the GNU General Public License as 
+//          published by the Free Software Foundation, either version 3 of the 
+//          License, or (at your option) any later version.
 //
-//          CaetanoSoft.Library is distributed in the hope that it will be useful,
-//          but WITHOUT ANY WARRANTY; without even the implied warranty of
-//          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//          CaetanoSoft.Library is distributed in the hope that it will be 
+//          useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+//          of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //          GNU General Public License for more details.
 //
 //          You should have received a copy of the GNU General Public License
-//          along with CaetanoSoft.Library.  If not, see <http://www.gnu.org/licenses/>.
+//          along with CaetanoSoft.Library. If not, see 
+//          <https://www.gnu.org/licenses/gpl-3.0.html>.
 //******************************************************************************
+
 
 package CaetanoSoft.Utilities.Array;
 
 /**
- * Esta classe implementa métodos para a manipulação de dados de matrizes e
- * vectores, como por exemplo, de remoção de linhas de um vector de objectos.
+ * This class implements methods to manipulate arrays and vectors data, 
+ * for example it allows remove lines from an objects vector.
  *
- * @author  José Caetano Silva (jcaetano@eugeniobranco.pt)
- * @version 1.0.2, 2016-09-16
- * @since   1.0
+ * @author  José Caetano Silva
+ * @version 1.02.0001, 2026-03-30
+ * @since   1.00
  */
 public class ArrayUtils
 {
     /**
-     * Singleton pattern, constructor is not allow.
+     * Default constructor.
+     *
+     * Not to be called by applications.
+     *
+     * @since   1.00
      */
     private ArrayUtils()
     {
-        // Classe padrão Singleton, a instanciação não é permitida.
+        // Singleton pattern class, instantiation not allowed
+        //super();
     }
 
     /**
-     * Singleton pattern, cloning is not allow.
+     * Don't permit creating an object by cloning it.
      *
-     * @return  A cloned object of the class <i>Object</i>
+     * @since   1.00
+     * @return  A cloned object of the class <code>Object</code>.
      * @throws  java.lang.CloneNotSupportedException
      * @see     java.lang.Object#clone()
      */
     @Override
     public Object clone() throws CloneNotSupportedException
     {
-        // Classe padrão Singleton, a clonagem não é permitida.
+        // Singleton pattern class, cloning not allowed
         //super.clone();
 
-        throw new CloneNotSupportedException("This singleton pattern class instance cannot be cloned");
+        throw new CloneNotSupportedException("This instance of the Singleton pattern class cannot be cloned");
 
         //return null;
     }
 
     /**
-     * Elimina os espaços em branco do início e fim das strings do array.
+     * Removes leading and trailing whitespace from all strings in an array.
      *
-     * @param astrStrings array de strings para eliminar os caracteres brancos de todos os elementos
+     * @param astrStrings strings array to be trimed
      */
     public static final void trimStringArray(String[] astrStrings)
     {
@@ -81,17 +89,17 @@ public class ArrayUtils
     }
 
     /**
-     * Remove um elemento do array.
+     * Remove's one element from an array, by its order index.
      *
-     * @param aobjObjects   array a manipular
-     * @param iItemToDel    número do item a remover
-     * @return  Um array de strings sem o item referido.
+     * @param aobjObjects   array to be manipulated
+     * @param iItemToDel    number of the item to be removed
+     * @return  The same array without the referenced item.
      */
     public static final Object[] removeElement(Object[] aobjObjects, int iItemToDel)
     {
         Object[] objArrayTemp = null;
 
-        // Cria um objecto de retorno compatível com o tipo do objecto de entrada
+        // Creates a return object compatible with the type of the input object
         if(aobjObjects instanceof String[])
         {
             objArrayTemp = new String[aobjObjects.length - 1];
@@ -109,10 +117,11 @@ public class ArrayUtils
             objArrayTemp = new Object[aobjObjects.length - 1];
         }
 
-        // Copia os elementos a manter
+        // Copies the elements to be kept
         System.arraycopy(aobjObjects, 0, objArrayTemp, 0, iItemToDel);
         System.arraycopy(aobjObjects, iItemToDel + 1, objArrayTemp, iItemToDel, aobjObjects.length - 1 - iItemToDel);
 
         return objArrayTemp;
     }
 }
+

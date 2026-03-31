@@ -1,0 +1,19 @@
+Using RXTX
+==========
+
+This page is for general content regarding the use of rxtx. Feel free to add your own content.
+  * Code examples
+  * Using RXTX In Eclipse
+  * Wrapping RXTX in an Eclipse Plugin
+  * Using RXTX In NetBeans
+  * Deploying JAVA with RXTX
+  * Documented interface to communicate with serial ports for beginners, including example project
+
+I wrote an app several months ago using javax.comm on windows. Sun has left me high and dry. rxtx help!
+  * download [1]
+  * unzip it
+  * copy rxtxSerial.dll into your c:\program files\java\jre-version\bin dir
+  * copy RXTXcomm.jar into your c:\program files\java\jre-version\lib\ext dir
+  * change all references from 'javax.comm' to 'gnu.io'
+  * recompile
+  * test

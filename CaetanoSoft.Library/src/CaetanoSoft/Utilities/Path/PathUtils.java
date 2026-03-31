@@ -6,25 +6,27 @@
 // Description:
 //          This class handles the manipulation of path strings.
 //
-// Copyright (C) 2008-2022:
-//          José Caetano Silva / CaetanoSoft
+// Copyright:
+//          © 2008-2022 José Caetano Silva / CaetanoSoft. All rights reserved.
 //
 // License:
 //          This file is part of CaetanoSoft.Library.
 //
-//          CaetanoSoft.Library is free software: you can redistribute it and/or modify
-//          it under the terms of the GNU General Public License as published by
-//          the Free Software Foundation, either version 3 of the License, or
-//          (at your option) any later version.
+//          CaetanoSoft.Library is free software: you can redistribute it and/or 
+//          modify it under the terms of the GNU General Public License as 
+//          published by the Free Software Foundation, either version 3 of the 
+//          License, or (at your option) any later version.
 //
-//          CaetanoSoft.Library is distributed in the hope that it will be useful,
-//          but WITHOUT ANY WARRANTY; without even the implied warranty of
-//          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//          CaetanoSoft.Library is distributed in the hope that it will be 
+//          useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+//          of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //          GNU General Public License for more details.
 //
 //          You should have received a copy of the GNU General Public License
-//          along with CaetanoSoft.Library.  If not, see <http://www.gnu.org/licenses/>.
+//          along with CaetanoSoft.Library. If not, see 
+//          <https://www.gnu.org/licenses/gpl-3.0.html>.
 //******************************************************************************
+
 
 package CaetanoSoft.Utilities.Path;
 
@@ -36,33 +38,39 @@ import java.net.URISyntaxException;
  * manipulation of path strings.
  * 
  * @author José Caetano Silva
- * @version 1.2.0, 2022-07-04
- * @since   1.0
+ * @version 1.02.0001, 2022-07-04
+ * @since   1.00
  */
 public class PathUtils
 {
     /**
-     * Singleton pattern, constructor is not allow.
+     * Default constructor.
+     *
+     * Not to be called by applications.
+     *
+     * @since   1.00
      */
     private PathUtils()
     {
-        // Singleton pattern: instantiation is not allowed.
+        // Singleton pattern class, instantiation not allowed
+        //super();
     }
 
     /**
-     * Singleton pattern, cloning is not allow.
+     * Don't permit creating an object by cloning it.
      *
-     * @return  A cloned object of the class <i>Object</i>
+     * @since   1.00
+     * @return  A cloned object of the class <code>Object</code>.
      * @throws  java.lang.CloneNotSupportedException
      * @see     java.lang.Object#clone()
      */
     @Override
     public Object clone() throws CloneNotSupportedException
     {
-        // Singleton pattern: cloning is not allowed.
+        // Singleton pattern class, cloning not allowed
         //super.clone();
 
-        throw new CloneNotSupportedException();
+        throw new CloneNotSupportedException("This instance of the Singleton pattern class cannot be cloned");
 
         //return null;
     }
@@ -70,7 +78,7 @@ public class PathUtils
     /**
      * Gets the user's directory path.
      *
-     * @return  A string with the user's path
+     * @return  A string with the user's path.
      */
     public static String getUserPath()
     {
@@ -91,7 +99,7 @@ public class PathUtils
     /**
      * Gets the directory path for this application.
      *
-     * @param app   The application object
+     * @param app   the application object
      * @return  A string with the application path
      */
     public static synchronized String getApplicationPath(Object app)
@@ -119,7 +127,7 @@ public class PathUtils
                 strPathApplication = strPathApplication.replace('/', File.separatorChar);
             }
             
-            // Removes *.jar
+            // Removes *.jar and .class
             if(strPathApplication.endsWith(".jar") || strPathApplication.endsWith(".class"))
             {
                 int i = strPathApplication.lastIndexOf(File.separatorChar);
@@ -162,3 +170,4 @@ public class PathUtils
         return extension;
     }
 }
+

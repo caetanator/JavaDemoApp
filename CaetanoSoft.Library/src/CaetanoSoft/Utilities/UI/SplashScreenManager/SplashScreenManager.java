@@ -1,43 +1,47 @@
 //******************************************************************************
-// Project: Splash Screen SplashScreenManager v1.00
-// URL:     http://slam.sourceforge.net
+// Project: CaetanoSoft.Library
+// URL:     https://github.com/caetanator/JavaDemoApp/
 // File:    SplashScreenManager.java
 //
 // Description:
-//          This class manages the Java 1.6 SplashScreen object.
+//          This class manages the Java 1.6 (and above) SplashScreen object.
 //
-// Copyright (C) 2008:
-//          José Caetano Silva (jcaetano@users.sourceforge.net)
+// Copyright:
+//          © 2008-2022 José Caetano Silva / CaetanoSoft. All rights reserved.
 //
-// Licence:
-//          This file is part of Splash Screen SplashScreenManager.
+// License:
+//          This file is part of CaetanoSoft.Library.
 //
-//          Splash Screen SplashScreenManager is free software: you can redistribute it and/or modify
-//          it under the terms of the GNU General Public License as published by
-//          the Free Software Foundation, either version 3 of the License, or
-//          (at your option) any later version.
+//          CaetanoSoft.Library is free software: you can redistribute it and/or 
+//          modify it under the terms of the GNU General Public License as 
+//          published by the Free Software Foundation, either version 3 of the 
+//          License, or (at your option) any later version.
 //
-//          Splash Screen SplashScreenManager is distributed in the hope that it will be useful,
-//          but WITHOUT ANY WARRANTY; without even the implied warranty of
-//          MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//          CaetanoSoft.Library is distributed in the hope that it will be 
+//          useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+//          of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 //          GNU General Public License for more details.
 //
 //          You should have received a copy of the GNU General Public License
-//          along with Splash Screen SplashScreenManager.  If not, see <http://www.gnu.org/licenses/>.
+//          along with CaetanoSoft.Library. If not, see 
+//          <https://www.gnu.org/licenses/gpl-3.0.html>.
 //******************************************************************************
+
+
 
 package CaetanoSoft.Utilities.UI.SplashScreenManager;
 
 import java.awt.*;
 
-
 /**
- * This class manages the Java 1.6 SplashScreen object.
- * 
- * @author  José Caetano Silva (jcaetano@users.sourceforge.net)
- * @version 1.00, 2008-06-10
+ * This class manages the Java 1.6 (and above) <code>SplashScreen</code> object.
+ *
+ * @author  José Caetano Silva
+ * @version 1.02.0001, 2022-07-26
+ * @since 1.00
  */
-public class SplashScreenManager {
+public class SplashScreenManager
+{
     // Singleton instance
     private static SplashScreenManager instance = null;
     // The splash screen Java object
@@ -75,7 +79,8 @@ public class SplashScreenManager {
      */
     protected SplashScreenManager() 
     {
-        // Exists only to defeat instantiation.
+        // Singleton pattern class, instantiation not allowed
+        // super();
     }
     
     /**
@@ -83,11 +88,13 @@ public class SplashScreenManager {
      *
      * @since   1.00
      */
-	@Override
-	public Object clone() throws CloneNotSupportedException {
-		throw new CloneNotSupportedException();
-                // super.clone();
-	}
+    @Override
+    public Object clone() throws CloneNotSupportedException
+    {
+       // Singleton pattern class, cloning not allowed
+       //super.clone();
+       throw new CloneNotSupportedException();
+    }
 	
     /**
      * Creates a new instance of the SplashScreenManager class.

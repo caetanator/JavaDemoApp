@@ -1,7 +1,33 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+//******************************************************************************
+// Project: CaetanoSoft.Library
+// URL:     https://github.com/caetanator/JavaDemoApp/
+// File:    FileChooserPreview.java
+//
+// Description:
+//          This class manages the File Chooser Preview.
+//
+// Copyright:
+//          © 2008-2022 José Caetano Silva / CaetanoSoft. All rights reserved.
+//
+// License:
+//          This file is part of CaetanoSoft.Library.
+//
+//          CaetanoSoft.Library is free software: you can redistribute it and/or 
+//          modify it under the terms of the GNU General Public License as 
+//          published by the Free Software Foundation, either version 3 of the 
+//          License, or (at your option) any later version.
+//
+//          CaetanoSoft.Library is distributed in the hope that it will be 
+//          useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+//          of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//          GNU General Public License for more details.
+//
+//          You should have received a copy of the GNU General Public License
+//          along with CaetanoSoft.Library. If not, see 
+//          <https://www.gnu.org/licenses/gpl-3.0.html>.
+//******************************************************************************
+
+
 package CaetanoSoft.Utilities.UI;
 
 import java.awt.Dimension;
@@ -15,16 +41,21 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 
 /**
+ * A generic File Chooser Preview for files, to use in FileChooser.
  *
- * @author JCaetano
+ * @author  José Caetano Silva
+ * @version 1.02.0001, 2022-07-26
+ * @since 1.00
  */
-public class FileChooserPreview extends JComponent implements PropertyChangeListener {
+public class FileChooserPreview extends JComponent implements PropertyChangeListener
+{
     private JFileChooser fileChooserDialog = null;
     private String[] fileExtensions = null;
     private ImageIcon thumbnail = null;
     private File file = null;
 
-    public FileChooserPreview(JFileChooser fc, String[] extensions) {
+    public FileChooserPreview(JFileChooser fc, String[] extensions)
+    {
         fileChooserDialog = fc;
         fileExtensions = extensions;
         // The file extension can't be null
@@ -36,7 +67,8 @@ public class FileChooserPreview extends JComponent implements PropertyChangeList
         fileChooserDialog.setAccessory(this);
     }
 
-    public void loadImage() {
+    public void loadImage()
+    {
         if (file == null) {
             thumbnail = null;
             return;
@@ -58,8 +90,12 @@ public class FileChooserPreview extends JComponent implements PropertyChangeList
     }
     
     // PropertyChangeListener methods
+    /**
+     * @see java.beans.PropertyChangeListener
+     */
     @Override
-    public void propertyChange(PropertyChangeEvent e) {
+    public void propertyChange(PropertyChangeEvent e)
+    {
         boolean update = false;
         String prop = e.getPropertyName();
 
@@ -86,9 +122,12 @@ public class FileChooserPreview extends JComponent implements PropertyChangeList
         }
     }
 
-    // JComponent methods
+    /**
+     * @see javax.swing.JComponent#paintComponent
+     */
     @Override
-    protected void paintComponent(Graphics g) {
+    protected void paintComponent(Graphics g)
+    {
         // Paint a preview of the selected file
         if (thumbnail == null) {
             loadImage();

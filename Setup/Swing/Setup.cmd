@@ -10,7 +10,7 @@ If Exist "%jdk%" (
 	Copy /Y ".\swing.properties" "%jdk%\jre\lib\" 
 )
 Rem Java Run-time Environment
-If Exist "%jdk%" (
+If Exist "%jre%" (
 	Rem Java Swing API Look & Feel configuration.
 	Rem Edit the file to change the default Swing Look & Feel for all applications
 	Copy /Y ".\swing.properties" "%jre%\lib\"

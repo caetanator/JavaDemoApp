@@ -1,7 +1,33 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
+//******************************************************************************
+// Project: CaetanoSoft.Library
+// URL:     https://github.com/caetanator/JavaDemoApp/
+// File:    FileChooserHelper.java
+//
+// Description:
+//          This class manages the File Chooser Helper.
+//
+// Copyright:
+//          © 2008-2022 José Caetano Silva / CaetanoSoft. All rights reserved.
+//
+// License:
+//          This file is part of CaetanoSoft.Library.
+//
+//          CaetanoSoft.Library is free software: you can redistribute it and/or 
+//          modify it under the terms of the GNU General Public License as 
+//          published by the Free Software Foundation, either version 3 of the 
+//          License, or (at your option) any later version.
+//
+//          CaetanoSoft.Library is distributed in the hope that it will be 
+//          useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+//          of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+//          GNU General Public License for more details.
+//
+//          You should have received a copy of the GNU General Public License
+//          along with CaetanoSoft.Library. If not, see 
+//          <https://www.gnu.org/licenses/gpl-3.0.html>.
+//******************************************************************************
+
+
 package CaetanoSoft.Utilities.UI;
 
 import java.awt.Component;
@@ -14,12 +40,17 @@ import javax.swing.filechooser.FileView;
 import static javax.swing.JFileChooser.*;
 
 /**
+ * A generic File Chooser Helper for files, to use in FileChooser.
  *
- * @author JCaetano
+ * @author  José Caetano Silva
+ * @version 1.02.0001, 2022-07-26
+ * @since 1.00
  */
-public class FileChooserHelper {
+public class FileChooserHelper
+{
     /**
-     * 
+     * Handles the FileOpenDialog, with a file extension filter.
+
      * @param windowParent
      * @param strTitle
      * @param strOpenPath
@@ -28,7 +59,7 @@ public class FileChooserHelper {
      * @param bShowAllFiles
      * @param fileFilters
      * @param fileViews
-     * @return 
+     * @return An array of files to be open.
      */
     public synchronized static File[] showFileOpenDialog(Component windowParent, String strTitle, String strOpenPath, boolean bMultipleFiles, int nChooseWhat, boolean bShowAllFiles, FileFilter[] fileFilters, FileView[] fileViews)
     {
@@ -61,7 +92,7 @@ public class FileChooserHelper {
         else {
             // Do nothing
         }
-	// Disable the accepting all files if a File View is given
+        // Disable the accepting all files if a File View is given
         if (bShowAllFiles) {
             fileChooserDialog.setFileFilter(null);
             fileChooserDialog.setAcceptAllFileFilterUsed(true);
@@ -70,7 +101,7 @@ public class FileChooserHelper {
             fileChooserDialog.setFileFilter(null);
             fileChooserDialog.setAcceptAllFileFilterUsed(false);
         }
-	// Add the accepting files if a File Filter is given
+        // Add the accepting files if a File Filter is given
         if (fileFilters != null) {
             for(int i = 0; i < fileFilters.length; i++) {
                 fileChooserDialog.addChoosableFileFilter(fileFilters[i]);
@@ -81,24 +112,24 @@ public class FileChooserHelper {
             fileChooserDialog.setFileFilter(null);
             fileChooserDialog.setAcceptAllFileFilterUsed(true);
         }
-	// Set the File View if it is given
+        // Set the File View if it is given
         if (fileViews != null) {
             for(int i = 0; i < fileFilters.length; i++) {
-                // TODO
+                // TODO: 
             }
             fileChooserDialog.setFileView(fileViews[0]);
         }
         else {
             fileChooserDialog.setFileView(null);
         }
-	// Set single or multiple file(s) mode
+        // Set single or multiple file(s) mode
         fileChooserDialog.setMultiSelectionEnabled(bMultipleFiles);
         // Set the type of selection allowed
-	fileChooserDialog.setFileSelectionMode(nChooseWhat);
+        fileChooserDialog.setFileSelectionMode(nChooseWhat);
         // Clear the preview from the previous display of the chooser
         JComponent accessory = fileChooserDialog.getAccessory();
         if (accessory != null) {
-            // TODO
+            // TODO: 
             ((FileChooserPreview)accessory).loadImage();
         }
         // Shows the dialog
@@ -132,7 +163,8 @@ public class FileChooserHelper {
     }
     
     /**
-     * 
+     * Handles the FileSaveDialog, with a file extension filter.
+     *
      * @param windowParent
      * @param strTitle
      * @param strOpenPath
@@ -140,7 +172,7 @@ public class FileChooserHelper {
      * @param bShowAllFiles
      * @param fileFilter
      * @param fileView
-     * @return 
+     * @return The saved file.
      */
     public synchronized static File showFileSaveDialog(Component windowParent, String strTitle, String strOpenPath, String strDefaultFile, boolean bShowAllFiles, FileFilter fileFilter, FileView fileView)
     {
@@ -190,7 +222,7 @@ public class FileChooserHelper {
             fileChooserDialog.setFileFilter(null);
             fileChooserDialog.setAcceptAllFileFilterUsed(false);
         }
-	// Add the accepting files if a File Filter is given
+	      // Add the accepting files if a File Filter is given
         if (fileFilter != null) {
             fileChooserDialog.setFileFilter(fileFilter);
         }
@@ -198,21 +230,21 @@ public class FileChooserHelper {
             fileChooserDialog.setFileFilter(null);
             fileChooserDialog.setAcceptAllFileFilterUsed(true);
         }
-	// Set the File View if it is given
+	      // Set the File View if it is given
         if (fileView != null) {
             fileChooserDialog.setFileView(fileView);
         }
         else {
             fileChooserDialog.setFileView(null);
         }
-	// Set single or multiple file(s) mode
+        // Set single or multiple file(s) mode
         fileChooserDialog.setMultiSelectionEnabled(false);
         // Set the type of selection allowed
-	fileChooserDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        fileChooserDialog.setFileSelectionMode(JFileChooser.FILES_ONLY);
         // Clear the preview from the previous display of the chooser
         JComponent accessory = fileChooserDialog.getAccessory();
         if (accessory != null) {
-            // TODO
+            // TODO: 
             ((FileChooserPreview)accessory).loadImage();
         }
         // Shows the dialog
