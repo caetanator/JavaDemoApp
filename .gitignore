@@ -1,4 +1,6 @@
-﻿/CaetanoSoft.JavaDemoApp/build
+﻿/.vs
+/.vscode
+/CaetanoSoft.JavaDemoApp/build
 /CaetanoSoft.JavaDemoApp/dist
 /CaetanoSoft.JavaDemoApp/lib
 /CaetanoSoft.JavaDemoApp/test
