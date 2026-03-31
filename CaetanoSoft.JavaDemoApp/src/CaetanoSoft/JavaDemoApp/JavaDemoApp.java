@@ -1185,7 +1185,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
             if((connectionTimeoutInMilliseconds != null) && !(connectionTimeoutInMilliseconds.trim().isEmpty())) {
                 connectionTimeoutInMilliseconds = connectionTimeoutInMilliseconds.trim();
                 try {
-                    m_nConnectionTimeout  = Integer.parseInt(connectionTimeoutInMilliseconds) * 1000;
+                    m_nConnectionTimeout  = Integer.parseInt(connectionTimeoutInMilliseconds);
                     if((m_nConnectionTimeout < 1000) || (m_nConnectionTimeout > 65535)) {
                         // Error, Invalid connection timeout value
                         doExit(ExitErrorCodes.EXIT_ERROR_BAD_CONFIG_FILE.getErrorCode(), "Error: Invalid connection timeout value!");
