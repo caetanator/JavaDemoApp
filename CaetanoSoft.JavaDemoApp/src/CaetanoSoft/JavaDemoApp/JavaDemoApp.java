@@ -62,6 +62,7 @@ import javax.swing.filechooser.FileView;
 
 import CaetanoSoft.Utilities.Path.PathUtils;
 import CaetanoSoft.Utilities.Print.PrintUtils;
+import CaetanoSoft.Utilities.String.StringUtils;
 import CaetanoSoft.Utilities.Translation.TranslationUtils;
 import CaetanoSoft.Utilities.UI.CenterWindow;
 import CaetanoSoft.Utilities.UI.FileChooserFilter;
@@ -79,7 +80,7 @@ import CaetanoSoft.Utilities.UI.SplashScreenManager.SplashScreenManager;
  * <p></p>
  * Usage:
  * <ul>
- *	<li>[|JAVA|] JavaDemoApp.jar [-h]</li>
+ *	<li>java -jar JavaDemoApp.jar [-h]</li>
  *      <li>&nbsp;</li>
  *      <li>-h: Prints this help screen and exit</li>
  * </ul>
@@ -185,7 +186,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
         }
     }
        
-    // Debug levels
+    // Debug levels flags
     private static final int DEBUG_LEVEL_NONE    = 0x00000000;
     private static final int DEBUG_LEVEL_ERROR   = 0x00000001;
     private static final int DEBUG_LEVEL_WARNING = 0x00000002;
@@ -376,7 +377,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
         URL urlImage = getClass().getResource("Resources/AppIcon.gif");
         Image im = Toolkit.getDefaultToolkit().getImage(urlImage);
         this.setIconImage(im);
-        this.setTitle("Java Demo App");
+        this.setTitle(APP_NAME);
         this.setMinimumSize(new Dimension(300, 200));
         this.setBackground(Color.WHITE);
         this.setLayout(new BorderLayout());
@@ -386,6 +387,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
         this.pack();
         // Center the main window widget on the screen
         CenterWindow.doCenterWindow(null, this);
+        this.setLocationRelativeTo(null);
     }
     
     // ActionListener methods
@@ -667,7 +669,8 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
      */
     private void doMenuHelpAbout()
     {
-        JOptionPane.showMessageDialog(this, "CaetanoSoft\nJava Demo App v1.01", this.getTitle(), JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(this, "CaetanoSoft\n" + APP_NAME + " v" + APP_VERSION, 
+                this.getTitle(), JOptionPane.INFORMATION_MESSAGE);
     }
     
     private void updateMainMenu()
@@ -780,16 +783,19 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
                         m_objLogger.setLevel(Level.ALL);
                         m_objLogger.entering(JavaDemoApp.class.getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
                     }
+                    else if ((m_fLogLevel & DEBUG_LEVEL_INFO) != 0) {
+                        m_fLogLevel |= DEBUG_LEVEL_INFO | DEBUG_LEVEL_WARNING | DEBUG_LEVEL_ERROR;
+                        m_objLogger.setLevel(Level.INFO);
+                        m_objLogger.entering(JavaDemoApp.class.getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
+                    }
                     else if ((m_fLogLevel & DEBUG_LEVEL_WARNING) != 0) {
+                        m_fLogLevel |= DEBUG_LEVEL_WARNING | DEBUG_LEVEL_ERROR;
                         m_objLogger.setLevel(Level.WARNING);
                         m_objLogger.entering(JavaDemoApp.class.getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
                     }
                     else if ((m_fLogLevel & DEBUG_LEVEL_ERROR) != 0) {
+                        m_fLogLevel |= DEBUG_LEVEL_ERROR;
                         m_objLogger.setLevel(Level.SEVERE);
-                    }
-                    else if ((m_fLogLevel & DEBUG_LEVEL_INFO) != 0) {
-                        m_objLogger.setLevel(Level.INFO);
-                        m_objLogger.entering(JavaDemoApp.class.getName(), Thread.currentThread().getStackTrace()[1].getMethodName());
                     }
                 }
                 // Code to be executed on program's exit
@@ -810,8 +816,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
                                 // For database applications, end the conection before exit
                                 synchronized(m_dbConnection)
                                 {
-                                    if((m_dbConnection != null) && !m_dbConnection.isClosed())
-                                    {
+                                    if((m_dbConnection != null) && !m_dbConnection.isClosed()) {
                                         m_dbConnection.close();
                                     }
                                 }
@@ -852,7 +857,8 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
                         m_objLogger.config("JDBC Driver: " + m_strJdbcDriver);
                         m_objLogger.config("JDBC URL: " + m_strJdbcURL);
                         m_objLogger.config("DB User: " + m_strJdbcUsername);
-                        m_objLogger.config("DB Password: " + m_strJdbcPassword);                   
+                        m_objLogger.config("DB Password: " + m_strJdbcPassword);
+                        m_objLogger.config("JDBC_CONNECT_TIMEOUT: " + m_nConnectionTimeout);
                         m_objLogger.config("Slave Threads Stop: " + m_nThreadSleepTime);
                     }
                 }
@@ -863,8 +869,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
                 }
                 catch(ClassNotFoundException ex) {
                     // An exception was detected; the program terminates with an error
-                    if((m_objLogger != null) && ((m_fLogLevel & DEBUG_LEVEL_ERROR) != 0))
-                    {
+                    if((m_objLogger != null) && ((m_fLogLevel & DEBUG_LEVEL_ERROR) != 0)) {
                         m_objLogger.log(Level.SEVERE, null, ex);
                     }
 
@@ -872,8 +877,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
                 }
                 catch(Exception ex) {
                     // An exception was detected; the program terminates with an error
-                    if((m_objLogger != null) && ((m_fLogLevel & DEBUG_LEVEL_ERROR) != 0))
-                    {
+                    if((m_objLogger != null) && ((m_fLogLevel & DEBUG_LEVEL_ERROR) != 0)) {
                         m_objLogger.log(Level.SEVERE, null, ex);
                     }
 
@@ -974,12 +978,16 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
         }
         
         System.out.println("");
-        System.out.println("(c) 2008-2026 José Caetno Silva / CaetanoSoft");
+        System.out.println("" + APP_NAME + " v" + APP_VERSION);
+        System.out.println("(c) 2008-2026 José Caetano Silva / CaetanoSoft");
         System.out.println("");
         System.out.println("Usage:");
-        System.out.println("\t[|JAVA|] JavaDemoApp.jar -h");
-        System.out.println("\t[|JAVA|] JavaDemoApp.jar");
-        System.out.println("\t\t-h: Prints this help screen and exit");
+        System.out.println("\tjava -jar JavaDemoApp.jar -h");
+        System.out.println("\t\t(Prints this help screen and exit)");
+        System.out.println("\tjava -jar JavaDemoApp.jar -di");
+        System.out.println("\t\t(Prints Java VM and configuration information and exit)");
+        System.out.println("\tjava -jar JavaDemoApp.jar");
+        System.out.println("\t\t(Runs the application normally)");
         System.out.println("");
         System.out.println("Returned Error Codes:");
         System.out.println("\t  0: OK");
@@ -1005,6 +1013,73 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
     }
     
     /**
+     * Prints debug information.
+     *
+     * @since 1.00
+     */
+    public static void printDebugInfo() {
+        System.out.println("");
+        System.out.println("" + APP_NAME + " v" + APP_VERSION);
+        System.out.println("(c) 2008-2026 José Caetano Silva / CaetanoSoft");
+        System.out.println("");
+        System.out.println("Java VM Information:");
+        System.out.println("\tVendor: " + System.getProperty("java.vendor"));
+        System.out.println("\tVersion: " + System.getProperty("java.version"));
+        System.out.println("\tSpecification Version: " + System.getProperty("java.specification.version"));
+        System.out.println("\tVendor URL: \"" + System.getProperty("java.vendor.url") + "\"");
+        System.out.println("\tBug Report URL: \"" + System.getProperty("java.vendor.url.bug") + "\"");
+        System.out.println("\tInstallation Directory: \"" + System.getProperty("java.home") + "\"");
+        System.out.println("\tLibrary Directory: \"" + System.getProperty("sun.boot.library.path") + "\"");
+        System.out.println("\tClass Path: \"" + System.getProperty("java.class.path") + "\"");
+        System.out.println("\tJNU String Encoding: " + System.getProperty("sun.jnu.encoding"));
+        System.out.println("Java Application Information:");
+        System.out.println("\tCommand Line: \"" + System.getProperty("sun.java.command") + "\"");
+        System.out.println("\tWorking Directory: \"" + System.getProperty("user.dir") + "\"");
+        System.out.println("\tTemp Directory: \"" + System.getProperty("java.io.tmpdir") + "\"");
+        System.out.println("\tConfiguration File: \"" + m_strConfigFile + "\"");
+        System.out.println("OS Information:");
+        System.out.println("\tName: " + System.getProperty("os.name"));
+        System.out.println("\tVersion: " + System.getProperty("os.version"));
+        System.out.println("\tArchitecture: " + System.getProperty("os.arch"));
+        System.out.println("\tArchitecture Data Model: " + System.getProperty("sun.arch.data.model"));
+        System.out.println("\tCPU Endian: " + System.getProperty("sun.cpu.endian"));
+        System.out.println("\tLine Separator: '" + StringUtils.escapeString(System.getProperty("line.separator")) + "'");
+        System.out.println("\tDirectory Separator: '" + System.getProperty("file.separator") + "'");
+        System.out.println("\tPath Separator: '" + System.getProperty("path.separator") + "'");
+        System.out.println("\tText File Encoding: " + System.getProperty("file.encoding"));
+        System.out.println("\tStdIn Encoding: " + System.getProperty("stdin.encoding"));
+        System.out.println("\tStdOut Encoding: " + System.getProperty("stdout.encoding"));
+        System.out.println("\tStdErr Encoding: " + System.getProperty("stderr.encoding"));
+        System.out.println("User Information:");
+        System.out.println("\tName: " + System.getProperty("user.name"));
+        System.out.println("\tLanguage: " + System.getProperty("user.language"));
+        System.out.println("\tCountry: " + System.getProperty("user.country"));
+        System.out.println("\tHome Directory: \"" + System.getProperty("user.home") + "\"");
+        System.out.println("\tDesktop Directory: \"" + PathUtils.getUserDesktopPath() + "\"");
+        System.out.println("\tDocuments Directory: \"" + PathUtils.getUserDocumentsPath() + "\"");
+        System.out.println("\tPictures Directory: \"" + PathUtils.getUserPicturesPath() + "\"");
+        System.out.println("\tVideos Directory: \"" + PathUtils.getUserVideosPath() + "\"");
+        System.out.println("\tMusic Directory: \"" + PathUtils.getUserMusicPath() + "\"");
+        System.out.println("\tDownloads Directory: \"" + PathUtils.getUserDownloadsPath() + "\"");
+        System.out.println("");
+        
+        System.out.println("-----------------------------------------");
+        System.out.println("Java VM Properties:");
+        Properties properties = System.getProperties();
+        properties.forEach((k, v) -> System.out.println(k + ": '" + v + "'"));
+        System.out.println("");
+        
+        System.out.println("-----------------------------------------");
+        System.out.println("Supported Java Swing Look&Feel:");
+        UIManager.LookAndFeelInfo[] looks = UIManager.getInstalledLookAndFeels();
+        for (UIManager.LookAndFeelInfo look : looks) {
+            System.out.println("  " + look.getClassName());
+        }
+        System.out.println("Default Java Swing Look&Feel: " + UIManager.getSystemLookAndFeelClassName());
+        System.out.println("");
+    }
+    
+    /**
      * Processes command-line parameters.
      *
      * @param arrStrArgs
@@ -1026,23 +1101,28 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
         }
 
         // Processes the parameters
-        int i = 0;
-        while(i < arrStrArgs.length)
-        {
-            if(arrStrArgs[i].equals("-h"))
-            {
-                // Parameter -h : show help
-                // Prints the command usage
-                printUsage();
-
-                doExit(ExitErrorCodes.EXIT_OK.getErrorCode(), "");
+        int paramCount = 0;
+        while (paramCount < arrStrArgs.length) {
+            switch (arrStrArgs[paramCount]) {
+                case "-h":
+                    // Parameter -h : show help
+                    // Prints the command usage
+                    printUsage();
+                    doExit(ExitErrorCodes.EXIT_OK.getErrorCode(), "");
+                    break;
+                case "-di":
+                    // Parameter -di : show debug information
+                    // Prints Java VM and configuration information and exit
+                    printDebugInfo();
+                    doExit(ExitErrorCodes.EXIT_OK.getErrorCode(), "");
+                    break;
+                default:
+                    // Error, Unknown parameter
+                    doExit(ExitErrorCodes.EXIT_ERROR_BAD_PARAMETER.getErrorCode(), "Error: Invalid parameter \"" + arrStrArgs[paramCount] + "\"!");
+                    break;
             }
-            else {
-                // Error, Unknown parameter
-                doExit(ExitErrorCodes.EXIT_ERROR_BAD_PARAMETER.getErrorCode(), "Error: Invalid parameter \"" + arrStrArgs[i] + "\"!");
-            }
 
-            ++i;
+            ++paramCount;
         }
 
         if(m_objLogger != null)
@@ -1085,7 +1165,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
             }
             else
             {
-                doExit(ExitErrorCodes.EXIT_ERROR_BAD_CONFIG_FILE.getErrorCode(), "Error: Ficheiro de configuração por defeito \"" + m_strConfigFile + "\" inexistente!");
+                doExit(ExitErrorCodes.EXIT_ERROR_BAD_CONFIG_FILE.getErrorCode(), "Error: Default configuration file \"" + m_strConfigFile + "\" not found!");
             }
         }
         catch(FileNotFoundException ex)
@@ -1154,7 +1234,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
             if((debugLevel != null) && !debugLevel.trim().isEmpty())
             {
                 try {
-                    m_fLogLevel = Integer.parseInt(debugLevel);
+                    m_fLogLevel = Integer.parseInt(debugLevel);                
                 }
                 catch(NumberFormatException ex) {
                     m_fLogLevel = DEBUG_LEVEL_ERROR;

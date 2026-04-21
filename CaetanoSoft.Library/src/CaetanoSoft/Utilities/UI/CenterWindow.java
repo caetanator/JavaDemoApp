@@ -46,7 +46,7 @@ public class CenterWindow {
      * Centers a child window on a parent window.
      *
      * @param		parent	the parent window. If <code>null</code>, the desktop window (the screen) is used insted
-     * @param		child		the child window can't be <code>null</code>! If so, an exception is trown
+     * @param		child	the child window can't be <code>null</code>! If so, an exception is trown
      * @exception	IllegalArgumentException	If the child window is null, this exception is thrown.
      * @since		1.0
      */
@@ -65,6 +65,12 @@ public class CenterWindow {
             if (parent == null) {
                 // Parent is the desktop screen
                 rectP = new Rectangle(Toolkit.getDefaultToolkit().getScreenSize());
+                // TODO:
+                //DisplayMode modeDefaultScreen = GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayMode();
+                //for (DisplayMode mode : GraphicsEnvironment.getLocalGraphicsEnvironment().getDefaultScreenDevice().getDisplayModes())
+                //{
+                //  System.out.println(mode.getWidth() + " x " + mode.getHeight() + "(" + mode.getBitDepth() + ") : refresh rate " + mode.getRefreshRate());
+                //}
             }
             else {
                     rectP = parent.getBounds();

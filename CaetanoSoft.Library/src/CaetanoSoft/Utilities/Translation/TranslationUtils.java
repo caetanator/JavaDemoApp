@@ -75,13 +75,13 @@ public class TranslationUtils
 	  @Override
 	  public Object clone() throws CloneNotSupportedException
     {
-		    // Singleton pattern class, cloning not allowed
+        // Singleton pattern class, cloning not allowed
         //super.clone();
 
         throw new CloneNotSupportedException("This instance of the Singleton pattern class cannot be cloned");
 
         //return null;
-	  }
+    }
 	
     /**
      * Creates a new instance of the Translation class.

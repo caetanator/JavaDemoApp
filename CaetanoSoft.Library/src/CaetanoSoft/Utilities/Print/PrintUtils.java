@@ -167,4 +167,3 @@ public class PrintUtils implements Printable
         currentManager.setDoubleBufferingEnabled(true);
     }
 }
-
