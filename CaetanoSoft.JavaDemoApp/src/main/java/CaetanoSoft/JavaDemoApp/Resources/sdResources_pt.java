@@ -28,7 +28,7 @@
 //******************************************************************************
 
 
-package CaetanoSoft.JavaDemoApp.Resources;
+package main.java.CaetanoSoft.JavaDemoApp.Resources;
 
 import java.awt.event.*;
 import java.util.ListResourceBundle;

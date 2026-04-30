@@ -30,7 +30,7 @@
 //******************************************************************************
 
 
-package CaetanoSoft.JavaDemoApp;
+package main.java.CaetanoSoft.JavaDemoApp;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -60,16 +60,16 @@ import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileView;
 
-import CaetanoSoft.Utilities.Path.PathUtils;
-import CaetanoSoft.Utilities.Print.PrintUtils;
-import CaetanoSoft.Utilities.String.StringUtils;
-import CaetanoSoft.Utilities.Internationalization.InternationalizationUtils;
-import CaetanoSoft.Utilities.UI.CenterWindow;
-import CaetanoSoft.Utilities.UI.FileChooserFilter;
-import CaetanoSoft.Utilities.UI.FileChooserHelper;
-import CaetanoSoft.Utilities.UI.FileChooserView;
-import CaetanoSoft.Utilities.UI.IconUtils;
-import CaetanoSoft.Utilities.UI.SplashScreenManager.SplashScreenManager;
+import main.java.CaetanoSoft.Utilities.Internationalization.InternationalizationUtils;
+import main.java.CaetanoSoft.Utilities.Path.PathUtils;
+import main.java.CaetanoSoft.Utilities.Print.PrintUtils;
+import main.java.CaetanoSoft.Utilities.String.StringUtils;
+import main.java.CaetanoSoft.Utilities.UI.CenterWindow;
+import main.java.CaetanoSoft.Utilities.UI.FileChooserFilter;
+import main.java.CaetanoSoft.Utilities.UI.FileChooserHelper;
+import main.java.CaetanoSoft.Utilities.UI.FileChooserView;
+import main.java.CaetanoSoft.Utilities.UI.IconUtils;
+import main.java.CaetanoSoft.Utilities.UI.SplashScreenManager.SplashScreenManager;
 
 /**
  * This class can take a variable number of parameters on the command

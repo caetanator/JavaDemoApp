@@ -1,0 +1,11 @@
+﻿**/nbproject/private/
+/.vs
+/.vscode
+/build
+/dist
+/test
+/Setup/JavaPOS
+/Setup/javaComm
+/Setup/RxTx
+/Setup/MySQL JDBC
+
