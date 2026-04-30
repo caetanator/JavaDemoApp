@@ -7,7 +7,7 @@
 //          This class manages the Java 1.6 (and above) SplashScreen object.
 //
 // Copyright:
-//          © 2008-2022 José Caetano Silva / CaetanoSoft. All rights reserved.
+//          © 2008-2026 José Caetano Silva / CaetanoSoft. All rights reserved.
 //
 // License:
 //          This file is part of CaetanoSoft.Library.
@@ -26,9 +26,6 @@
 //          along with CaetanoSoft.Library. If not, see 
 //          <https://www.gnu.org/licenses/gpl-3.0.html>.
 //******************************************************************************
-
-
-
 package CaetanoSoft.Utilities.UI.SplashScreenManager;
 
 import java.awt.*;
@@ -36,12 +33,12 @@ import java.awt.*;
 /**
  * This class manages the Java 1.6 (and above) <code>SplashScreen</code> object.
  *
- * @author  José Caetano Silva
- * @version 1.02.0001, 2022-07-26
+ * @author José Caetano Silva
+ * @version 1.03.0001, 2026-04-23
  * @since 1.00
  */
-public class SplashScreenManager
-{
+public class SplashScreenManager {
+
     // Singleton instance
     private static SplashScreenManager instance = null;
     // The splash screen Java object
@@ -56,6 +53,10 @@ public class SplashScreenManager
     private static Rectangle progressBarRet = null;
     //The retangle of the text field
     private static Rectangle textFieldRet = null;
+    //The retangle of the progress bar
+    private static boolean validProgressBarRet = false;
+    //The retangle of the text field
+    private static boolean validTextFieldRet = false;
     // The font name to be used
     private static String fontName = null;
     // The font size in points to be used (1 point = 1/72 inches)
@@ -71,125 +72,139 @@ public class SplashScreenManager
 
     /**
      * Default constructor.
-     * 
+     *
      * Not to be called by applications.
-     * 
-     * @since   1.00
-     * @see #getInstance()
+     *
+     * @since 1.00
      */
-    protected SplashScreenManager() 
-    {
+    protected SplashScreenManager() {
         // Singleton pattern class, instantiation not allowed
-        // super();
+        //super();
     }
-    
+
     /**
      * Don't permit creating an object by cloning it.
      *
      * @since   1.00
+     * @return  A cloned object of the class <code>Object</code>.
+     * @throws  java.lang.CloneNotSupportedException
+     * @see     java.lang.Object#clone()
      */
     @Override
-    public Object clone() throws CloneNotSupportedException
-    {
-       // Singleton pattern class, cloning not allowed
-       //super.clone();
-       throw new CloneNotSupportedException();
+    public Object clone() throws CloneNotSupportedException {
+        // Singleton pattern class, cloning not allowed
+        //super.clone();
+
+        throw new CloneNotSupportedException("This instance of the Singleton pattern class cannot be cloned");
+
+        //return null;
     }
-	
+
     /**
      * Creates a new instance of the SplashScreenManager class.
-     * 
+     *
      * @return A new <i>SplashScreenManager</i> instance.
-     * @since   1.00
+     * @since 1.00
      */
-    public static synchronized SplashScreenManager getInstance()
-    {
+    public static synchronized SplashScreenManager getInstance() {
         if (instance == null) {
             instance = new SplashScreenManager();
             try {
                 splash = SplashScreen.getSplashScreen();
                 if (splash == null) {
-                    System.err.println("ERROR: SplashScreen could't find the image in 'SplashScreen-Image' property of the manifest file!");
-                }
-                else {
+                    System.getLogger(SplashScreenManager.class.getName()).log(System.Logger.Level.ERROR, "SplashScreen could't find the image in 'SplashScreen-Image' property of the manifest file!");
+                } else {
                     try {
                         graphics = splash.createGraphics();
                         if (graphics == null) {
-                            System.err.println("ERROR: SplashScreen could't create a Graphics2D object!");
-                        }
-                        else {
+                            System.getLogger(SplashScreenManager.class.getName()).log(System.Logger.Level.ERROR, "SplashScreenManager could't create a Graphics2D object!");
+                        } else {
                             if (progressBarRet != null) {
-                                if ((progressBarRet.width <= 0) || (progressBarRet.height <= 0) ||
-                                    (progressBarRet.x <= 0) || (progressBarRet.y <= 0) ||
-                                    (textFieldRet.width <= 0) || (textFieldRet.height <= 0) ||
-                                    (textFieldRet.x <= 0) || (textFieldRet.y <= 0)) {
-                                    System.err.println("Splash screen image to small");
+                                // Get the size of the image reference by 'SplashScreen-Image' property in the /META-INF/MANIFEST.MF file in the main jar 
+                                Dimension size = splash.getSize();
+                                // Check if size is valid
+                                validProgressBarRet = true;
+                                if ((progressBarRet.width <= size.width) || (progressBarRet.height <= size.height)
+                                        || (progressBarRet.x <= size.width) || (progressBarRet.y <= size.height)) {
+                                    validProgressBarRet = false;
+                                }
+                                validTextFieldRet = false;
+                                if ((textFieldRet.width <= size.width) || (textFieldRet.height <= size.height)
+                                        || (textFieldRet.x <= size.width) || (textFieldRet.y <= size.height)) {
+                                    validTextFieldRet = false;
+                                }
+                                if (!validProgressBarRet || !validTextFieldRet) {
+                                    System.getLogger(SplashScreenManager.class.getName()).log(System.Logger.Level.ERROR, 
+                                            "SplashScreen progress bar or text field to small!\n" + 
+                                            "Image Size: " + size.width + " x " + size.height + "\n" + 
+                                            "Progress Bar Size: " + progressBarRet.x + " x " + progressBarRet.y + "--" + progressBarRet.width + " x " + progressBarRet.height + "\n" + 
+                                            "Text Field: " + textFieldRet.x + " x " + textFieldRet.y + "--" + textFieldRet.width + " x " + textFieldRet.height + "\n"
+                                    );
                                 }
                             }
                             // Font
                             if (fontName == null) {
                                 fontName = "Default";
-                                if (fontSize <= 0)
+                                if (fontSize <= 0) {
                                     fontSize = 8;
+                                }
                                 try {
                                     textFont = new Font(fontName, fontStyle, fontSize);
-                                }
-                                catch(Exception ex) {
+                                } catch (Exception ex) {
                                     // Do nothing
                                 }
                             }
                         }
-                    }
-                    catch (IllegalStateException ex) {
+                    } catch (IllegalStateException ex) {
                         // If the splash screen has already been closed
-                    }
-                    catch (Exception ex) {
+                    } catch (Exception ex) {
                         // Do nothing
                     }
                 }
-            }
-            catch (HeadlessException ex) {
+            } catch (HeadlessException ex) {
                 // If GraphicsEnvironment.isHeadless() returns true
-            }
-            catch (UnsupportedOperationException ex) {
+            } catch (UnsupportedOperationException ex) {
                 // If the splash screen feature is not supported by the current toolkit
-            }
-            catch (Exception ex) {
+            } catch (Exception ex) {
                 // Do nothing
             }
         }
-        
+
         return instance;
     }
 
     /**
      * Close the splash screen image.
      *
-     * @since   1.00
+     * @since 1.00
      */
-    public void close()
-    {
+    public void close() {
         if (splash != null) {
             render("", 100);
             splash.close();
+            splash = null;
+        }
+        
+        if (graphics != null) {
+            graphics.dispose();
+            graphics = null;
         }
     }
 
     /**
      * Draws on the splash screen text and a progress bar.
-     * 
-     * @param message       The message to display
-     * @param percentage    The percentage of the progress bar
-     * @since   1.00
+     *
+     * @param message The message to display
+     * @param percentage The percentage of the progress bar
+     * @since 1.00
      */
-    public void render(String message, int percentage)
-    {
+    public void render(String message, int percentage) {
         if ((percentage < 0) || (percentage > 100)) {
-            System.err.println("Splash screen percentage must be betwen 0 and 100");
+            System.getLogger(SplashScreenManager.class.getName()).log(System.Logger.Level.ERROR, "SplashScreenManager percentage must be betwen 0 and 100! Percentage=" + percentage + " .");
         }
         if (graphics != null) {
             graphics.setComposite(AlphaComposite.Clear);
-            
+
             if ((textFieldRet != null) && !textFieldRet.isEmpty()) {
                 // Clears the text rectangle
                 graphics.setColor(textBackground);
@@ -204,7 +219,7 @@ public class SplashScreenManager
                 graphics.setPaintMode();
                 graphics.drawString(message, textFieldRet.x, textFieldRet.y + textFont.getSize());
             }
-            
+
             if ((progressBarRet != null) && !progressBarRet.isEmpty()) {
                 // Draw the progress bar
                 graphics.setColor(progressBarBackground);
@@ -213,185 +228,178 @@ public class SplashScreenManager
                 graphics.fillRect(progressBarRet.x, progressBarRet.y, textFieldRet.width, progressBarRet.height);
                 graphics.setColor(progressBarColor);
                 graphics.setPaintMode();
-                int bar = (int)((float)textFieldRet.width * ((float)percentage/100.0));
-                graphics.fillRect(progressBarRet.x, progressBarRet.y, bar , progressBarRet.height);
+                int bar = (int) ((float) textFieldRet.width * ((float) percentage / 100.0));
+                graphics.fillRect(progressBarRet.x, progressBarRet.y, bar, progressBarRet.height);
                 graphics.setColor(Color.BLACK);
                 graphics.setPaintMode();
                 graphics.drawRect(progressBarRet.x, progressBarRet.y, textFieldRet.width, progressBarRet.height);
             }
-            
-            if (splash != null) {
-                splash.update();
-            }
+        }
+        
+        if (splash != null) {
+            splash.update();
         }
     }
-    
+
     /**
      * Set the font name witch the text will be draw.
-     * 
-     * @param font  The font name.
-     * @since   1.00
+     *
+     * @param font The font name.
+     * @since 1.00
      */
-    public void setFontName(String font)
-    {
-        if (font == null)
+    public void setFontName(String font) {
+        if (font == null) {
             fontName = "Default";
-        else
+        } else {
             fontName = font;
+        }
         try {
             textFont = new Font(fontName, fontStyle, fontSize);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             // Use the default font
             fontName = "Default";
             textFont = new Font(fontName, fontStyle, fontSize);
         }
     }
-    
+
     /**
      * Set the font point size witch the text will be draw.
-     * <p>
+     * <p></p>
      * <b>Note:</b> 1 point = 1/72 inches.
-     * 
-     * @param size  The point size of the font to be used (in 1/72 of an inch units).
-     * @since   1.00
+     *
+     * @param size The point size of the font to be used (in 1/72 of an inch units)
+     * @since 1.00
      */
-    public void setFontSize(int size)
-    {
-        if (size <= 0)
+    public void setFontSize(int size) {
+        if (size <= 0) {
             fontSize = size;
-        else
+        } else {
             fontSize = size;
+        }
         try {
             textFont = new Font(fontName, fontStyle, fontSize);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             // Do nothing
         }
     }
-    
+
     /**
      * Set the font style witch the text will be draw.
-     * <p>
-     * <b>Note:</b> Can be any of the combinations Font.PLAIN, Font.BOLD, Font.ITALIC.
-     * 
-     * @param style  The font stlyle to be used (Font.PLAIN, Font.BOLD, Font.ITALIC).
-     * @since   1.00
-     * @see     java.awt.Font
+     * <p></p>
+     * <b>Note:</b> Can be any of the combinations Font.PLAIN, Font.BOLD,
+     * Font.ITALIC.
+     *
+     * @param style The font stlyle to be used (Font.PLAIN, Font.BOLD,
+     * Font.ITALIC).
+     * @since 1.00
+     * @see java.awt.Font
      */
-    public void setFontStyle(int style)
-    {
-        if ((fontStyle & ~(Font.PLAIN | Font.BOLD | Font.ITALIC)) != 0)
+    public void setFontStyle(int style) {
+        if ((fontStyle & ~(Font.PLAIN | Font.BOLD | Font.ITALIC)) != 0) {
             fontStyle = Font.PLAIN;
-        else
+        } else {
             fontStyle = style;
+        }
         try {
             textFont = new Font(fontName, fontStyle, fontSize);
-        }
-        catch(Exception ex) {
+        } catch (Exception ex) {
             // Do nothing
         }
     }
-    
+
     /**
      * Set the font foreground color witch the text will be draw.
-     * 
-     * @param fontColor  The font foreground color to be used.
-     * @since   1.00
-     * @see     java.awt.Color
+     *
+     * @param fontColor The font foreground color to be used.
+     * @since 1.00
+     * @see java.awt.Color
      */
-    public void setFontColor(Color fontColor)
-    {
+    public void setFontColor(Color fontColor) {
         textColor = fontColor;
     }
-    
+
     /**
      * Set the font background color witch the text will be draw.
-     * 
-     * @param fontBackground  The font background color to be used.
-     * @since   1.00
-     * @see     java.awt.Color
+     *
+     * @param fontBackground The font background color to be used.
+     * @since 1.00
+     * @see java.awt.Color
      */
-    public void setFontBackground(Color fontBackground)
-    {
+    public void setFontBackground(Color fontBackground) {
         textBackground = fontBackground;
     }
-    
+
     /**
      * Set the rectangle where the text will be draw.
-     * 
-     * @param textRectangle  The rectangle where the text will be draw.
-     * @since   1.00
-     * @see     java.awt.Rectangle
+     *
+     * @param textRectangle The rectangle where the text will be draw.
+     * @since 1.00
+     * @see java.awt.Rectangle
      */
-    public void setTextRectangle(Rectangle textRectangle)
-    {
+    public void setTextRectangle(Rectangle textRectangle) {
         textFieldRet = textRectangle;
     }
-    
+
     /**
      * Set the rectangle where the text will be draw.
-     * 
-     * @param x  The x position of the rectangle where the text will be draw.
-     * @param y  The y position of the rectangle where the text will be draw.
-     * @param with  The with of the rectangle where the text will be draw.
-     * @param height  The height of the rectangle where the text will be draw.
-     * @since   1.00
-     * @see     java.awt.Rectangle
+     *
+     * @param x The x position of the rectangle where the text will be draw.
+     * @param y The y position of the rectangle where the text will be draw.
+     * @param with The with of the rectangle where the text will be draw.
+     * @param height The height of the rectangle where the text will be draw.
+     * @since 1.00
+     * @see java.awt.Rectangle
      */
-    public void setTextRectangle(int x, int y, int with, int height)
-    {
+    public void setTextRectangle(int x, int y, int with, int height) {
         textFieldRet = new Rectangle(x, y, with, height);
     }
-    
+
     /**
      * Set the progress bar foreground color witch the text will be draw.
-     * 
-     * @param barColor  The progress bar foreground color to be used.
-     * @since   1.00
-     * @see     java.awt.Color
+     *
+     * @param barColor The progress bar foreground color to be used.
+     * @since 1.00
+     * @see java.awt.Color
      */
-    public void setBarColor(Color barColor)
-    {
+    public void setBarColor(Color barColor) {
         progressBarColor = barColor;
     }
-    
+
     /**
      * Set the progress bar background color witch the text will be draw.
-     * 
-     * @param barBackground  The progress bar background color to be used.
-     * @since   1.00
-     * @see     java.awt.Color
+     *
+     * @param barBackground The progress bar background color to be used.
+     * @since 1.00
+     * @see java.awt.Color
      */
-    public void setBarBackground(Color barBackground)
-    {
+    public void setBarBackground(Color barBackground) {
         progressBarBackground = barBackground;
     }
-    
+
     /**
      * Set the rectangle where the progress bar will be draw.
-     * 
-     * @param textRectangle  The rectangle where the text will be draw.
-     * @since   1.00
-     * @see     java.awt.Rectangle
+     *
+     * @param textRectangle The rectangle where the text will be draw.
+     * @since 1.00
+     * @see java.awt.Rectangle
      */
-    public void setBarRectangle(Rectangle textRectangle)
-    {
+    public void setBarRectangle(Rectangle textRectangle) {
         progressBarRet = textRectangle;
     }
-    
+
     /**
      * Set the rectangle where the progress bar will be draw.
-     * 
-     * @param x  The x position of the rectangle where the progress bar will be draw.
-     * @param y  The y position of the rectangle where the progress bar will be draw.
-     * @param with  The with of the rectangle progress bar.
-     * @param height  The height of the rectangle progress bar.
-     * @since   1.00
-     * @see     java.awt.Rectangle
+     *
+     * @param x The x position of the rectangle where the progress bar will be
+     * draw.
+     * @param y The y position of the rectangle where the progress bar will be
+     * draw.
+     * @param with The with of the rectangle progress bar.
+     * @param height The height of the rectangle progress bar.
+     * @since 1.00
+     * @see java.awt.Rectangle
      */
-    public void setBarRectangle(int x, int y, int with, int height)
-    {
+    public void setBarRectangle(int x, int y, int with, int height) {
         progressBarRet = new Rectangle(x, y, with, height);
     }
 }

@@ -184,18 +184,15 @@ public class PathUtils {
                                     strOut = reader.readLine();
                                     strPathDesktop = strOut.trim();
                                 } catch (IOException ex) {
-                                    // reader.readLine();
                                     System.getLogger(PathUtils.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                                 }
                                 int exitCode = 0;
                                 try {
                                     exitCode = process.waitFor();
                                 } catch (InterruptedException ex) {
-                                    // process.waitFor();
                                     System.getLogger(PathUtils.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                                 }
                             } catch (IOException ex) {
-                                // processBuilder.start();
                                 System.getLogger(PathUtils.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                             }
                         } else {
@@ -278,18 +275,15 @@ public class PathUtils {
                                     strOut = reader.readLine();
                                     strPathDocuments = strOut.trim();
                                 } catch (IOException ex) {
-                                    // reader.readLine();
                                     System.getLogger(PathUtils.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                                 }
                                 int exitCode = 0;
                                 try {
                                     exitCode = process.waitFor();
                                 } catch (InterruptedException ex) {
-                                    // process.waitFor();
                                     System.getLogger(PathUtils.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                                 }
                             } catch (IOException ex) {
-                                // processBuilder.start();
                                 System.getLogger(PathUtils.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
                             }
                         } else {

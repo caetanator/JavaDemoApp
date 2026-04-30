@@ -1,7 +1,7 @@
 //******************************************************************************
 // Project: CaetanoSoft.Library
 // URL:     https://github.com/caetanator/JavaDemoApp/
-// File:    TranslationUtils.java
+// File:    InternationalizationUtils.java
 //
 // Description:
 //          This class manages the translation of the Java AWT/Swing UI widgets
@@ -10,7 +10,7 @@
 //          For now, only Portuguese is supported.
 //
 // Copyright:
-//          © 2008-2022 José Caetano Silva / CaetanoSoft. All rights reserved.
+//          © 2008-2026 José Caetano Silva / CaetanoSoft. All rights reserved.
 //
 // License:
 //          This file is part of CaetanoSoft.Library.
@@ -31,8 +31,10 @@
 //******************************************************************************
 
 
-package CaetanoSoft.Utilities.Translation;
+package CaetanoSoft.Utilities.Internationalization;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
 import javax.swing.*;
 
 /**
@@ -42,13 +44,13 @@ import javax.swing.*;
  * For now, only the Portuguese language is supported.
  *
  * @author  José Caetano Silva
- * @version 1.02.0001, 2022-07-26
+ * @version 1.03.0001, 2026-04-28
  * @since 1.00
  */
-public class TranslationUtils
+public class InternationalizationUtils
 {
     // Singleton instance
-    private static TranslationUtils instance = null;
+    private static InternationalizationUtils instance = null;
 
     /**
      * Default constructor.
@@ -58,13 +60,13 @@ public class TranslationUtils
      * @since   1.00
      * @see #getInstance()
      */
-    protected TranslationUtils()
+    protected InternationalizationUtils()
     {
         // Singleton pattern class, instantiation not allowed
         //super();
     }
 
-	  /**
+    /**
      * Don't permit creating an object by cloning it.
      *
      * @since   1.00
@@ -87,19 +89,20 @@ public class TranslationUtils
      * Creates a new instance of the Translation class.
      *
      * @since   1.00
-     * @return A new <i>TranslationUtils</i> instance.
+     * @return A new <i>InternationalizationUtils</i> instance.
      */
-    public static synchronized TranslationUtils getInstance()
+    public static synchronized InternationalizationUtils getInstance()
     {
         if (instance == null)
         {
-            instance = new TranslationUtils();
+            instance = new InternationalizationUtils();
         }
         return instance;
     }
     
     /**
-     * Translate the Java resources strings to a diferent language.
+     * Translate the Java default system resources strings from english to
+     * a diferent language.
      * <p></p>
      * Supported language codes (BCP 47 tag format):
      * <ul>
@@ -111,10 +114,10 @@ public class TranslationUtils
      *	<li> <b>pt_BR</b> / <b>pt-BR</b>: Portuguese (Brasil)</li>
      * </ul>
      * @since   1.00
-     * @param strLang    string to be translated
+     * @param strLang    The language to be translated in BCP 47 tag format
      * @return  <code>true</code>, if translation was made. <code>false</code>, otherwise.
      */
-    public static boolean translateLanguage(String strLang)
+    public static boolean translateJavaDefaultResources(String strLang)
     {
         boolean bRet = false;
         String strResorceLang = null;
@@ -149,14 +152,21 @@ public class TranslationUtils
             }
             if (strResorceLang != null)
             {
-                // Install the language resources
-                strResorceLang = "CaetanoSoft.Utilities.Translation.Resources." + strResorceLang;
+                // Install the language resources for the Java PrinterJob.getPrinterJob().printDialog()
+                try {
+                    UIManager.getDefaults().addResourceBundle("sun.print.resources." + strResorceLang + "serviceui");
+                    //ResourceBundle messageRB = ResourceBundle.getBundle("sun.print.resources.serviceui", Locale.of("en"));
+                } catch (java.util.MissingResourceException e) {
+                    throw new Error("Fatal: Resource for ServiceUI " +
+                                    "is missing");
+                }
+                
+                // Install the language resources for the Java Look&Feel
+                strResorceLang = "CaetanoSoft.Utilities.Internationalization.Resources." + strResorceLang;
                 try
                 {
                     // Common to all Java Look&Feel
-                    //ResourceBundle props = ResourceBundle.getBundle("sun.print.resources.serviceui");
                     UIManager.getDefaults().addResourceBundle(strResorceLang + ".basic");
-                    UIManager.getDefaults().addResourceBundle(strResorceLang + ".serviceui");
 
                     // Specific to the Java Look&Feel
                     String strLF = UIManager.getLookAndFeel().toString();
@@ -187,8 +197,13 @@ public class TranslationUtils
                     }
                     else if (strLF.indexOf(".mac.") > 0)
                     {
-                        // Apple Macintosh Look & Feel(Only on Mac OS, since JRE v1.1)
+                        // Apple Macintosh/Classic Look & Feel(Only on Mac OS 9 or earlier, since JRE v1.1)
                         UIManager.getDefaults().addResourceBundle(strResorceLang + ".mac");
+                    }
+                    else if (strLF.indexOf(".aqua.") > 0)
+                    {
+                        // Apple macOS X Look & Feel(Only on macOS X, since JRE v1.6)
+                        UIManager.getDefaults().addResourceBundle(strResorceLang + ".aqua");
                     }
                     else
                     {

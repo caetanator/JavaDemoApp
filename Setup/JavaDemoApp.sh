@@ -118,6 +118,9 @@ fi
 ${cs_JRE}/bin/java ${cs_EMUVER} ${cs_LaF} ${cs_LaF_Extra} ${cs_LangCou} ${cs_CP} -cp "${CLASSPATH}" -jar CaetanoSoft.JavaDemoApp.jar $@
 #${cs_JRE}/bin/javaw ${cs_EMUVER} ${cs_LaF} ${cs_LaF_Extra} ${cs_LangCou} ${cs_CP} -cp "${CLASSPATH}" -jar CaetanoSoft.JavaDemoApp.jar $@ &
 
+# Print the exit code of the application
+echo Exit Code: "$?"
+
 # Clean up system variables
 cs_JRE=
 cs_EMUVER=

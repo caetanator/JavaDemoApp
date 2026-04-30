@@ -63,7 +63,7 @@ import javax.swing.filechooser.FileView;
 import CaetanoSoft.Utilities.Path.PathUtils;
 import CaetanoSoft.Utilities.Print.PrintUtils;
 import CaetanoSoft.Utilities.String.StringUtils;
-import CaetanoSoft.Utilities.Translation.TranslationUtils;
+import CaetanoSoft.Utilities.Internationalization.InternationalizationUtils;
 import CaetanoSoft.Utilities.UI.CenterWindow;
 import CaetanoSoft.Utilities.UI.FileChooserFilter;
 import CaetanoSoft.Utilities.UI.FileChooserHelper;
@@ -911,9 +911,9 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
                 if (ssManager != null) {
                     ssManager.render("Loading GUI translations...", 95);
                 }
-                final TranslationUtils translations = TranslationUtils.getInstance();
+                final InternationalizationUtils translations = InternationalizationUtils.getInstance();
                 String strLang = Locale.getDefault().toString();
-                TranslationUtils.translateLanguage(strLang);
+                InternationalizationUtils.translateJavaDefaultResources(strLang);
 
                 // Main window widget
                 if (ssManager != null) {

@@ -1,4 +1,5 @@
-﻿/.vs
+﻿**/nbproject/private/
+/.vs
 /.vscode
 /CaetanoSoft.JavaDemoApp/build
 /CaetanoSoft.JavaDemoApp/dist
@@ -6,7 +7,9 @@
 /CaetanoSoft.Library/build
 /CaetanoSoft.Library/dist
 /CaetanoSoft.Library/test
+/CaetanoSoft.Library/src/CaetanoSoft/Utilities/Internationalization/Resources/en_US
 /Setup/JavaPOS
 /Setup/javaComm
+/Setup/RxTx
 /Setup/MySQL JDBC
 
