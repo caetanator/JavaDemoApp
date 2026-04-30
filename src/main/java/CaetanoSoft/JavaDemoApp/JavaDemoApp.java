@@ -30,7 +30,7 @@
 //******************************************************************************
 
 
-package main.java.CaetanoSoft.JavaDemoApp;
+package CaetanoSoft.JavaDemoApp;
 
 import java.awt.*;
 import java.awt.event.*;
