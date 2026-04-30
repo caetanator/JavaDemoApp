@@ -1,6 +1,10 @@
 ﻿**/nbproject/private/
 /.vs
 /.vscode
+.classpath
+.project
+.settings/
+target/
 /CaetanoSoft.JavaDemoApp/build
 /CaetanoSoft.JavaDemoApp/dist
 /CaetanoSoft.JavaDemoApp/test

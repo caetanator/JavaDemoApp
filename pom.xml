@@ -5,9 +5,54 @@
     <artifactId>JavaDemoApp</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <dependencies>
+        <dependency>
+            <groupId>${project.groupId}</groupId>
+            <artifactId>Library</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+    </dependencies>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>24</maven.compiler.release>
+        <maven.compiler.release>21</maven.compiler.release>
         <exec.mainClass>Caetanosoft.JavaDemoApp.JavaDemoApp</exec.mainClass>
     </properties>
+    <name>Java Demo App</name>
+    <description>Basic Java Swing application to show all UI functionality.
+Supports splash screen and translation to portuguese.
+Can be used as a base to a new Java GUI application.</description>
+    <build>
+        <plugins>
+            <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <version>3.4.1</version>
+          <configuration>
+            <archive>
+              <index>true</index>
+              <addMavenDescriptor>false</addMavenDescriptor>
+              <manifestFile>src/main/java/META-INF/MANIFEST.MF</manifestFile>
+              <manifest>
+                <addClasspath>true</addClasspath>
+                <classpathPrefix>lib/</classpathPrefix>
+                <mainClass>Caetanosoft.JavaDemoApp.JavaDemoApp</mainClass>
+              </manifest>
+              <manifestEntries>
+                <Built-By></Built-By>
+              </manifestEntries>
+            </archive>
+          </configuration>
+        </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.15.0</version>
+                <configuration>
+                    <compilerArgs>
+                        <arg>-Xlint</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>
