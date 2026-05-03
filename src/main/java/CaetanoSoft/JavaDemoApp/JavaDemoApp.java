@@ -95,9 +95,9 @@ import CaetanoSoft.Utilities.UI.SplashScreenManager.SplashScreenManager;
  *	<li> 4: Error: Configuration file not found or invalid</li>
  *	<li> 5: Error: Invalid or non-existent input file</li>
  *	<li> 6: Error: Invalid or non-existent output file</li>
- *      <li> 7: Error: Invalid database connection or operation</li>
- *      <li> 8: Error: Invalid server IP/Name</li>
- *      <li> 9: Error: Invalid TCP/UDP service port</li>
+ *  <li> 7: Error: Invalid database connection or operation</li>
+ *  <li> 8: Error: Invalid server IP/Name</li>
+ *  <li> 9: Error: Invalid TCP/UDP service port</li>
  * </ul>
  * 
  * @author José Caetano Silva

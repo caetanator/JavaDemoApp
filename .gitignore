@@ -1,19 +1,12 @@
-﻿**/nbproject/private/
 /.vs
 /.vscode
-.classpath
-.project
-.settings/
-target/
-/CaetanoSoft.JavaDemoApp/build
-/CaetanoSoft.JavaDemoApp/dist
-/CaetanoSoft.JavaDemoApp/test
-/CaetanoSoft.Library/build
-/CaetanoSoft.Library/dist
-/CaetanoSoft.Library/test
-/CaetanoSoft.Library/src/CaetanoSoft/Utilities/Internationalization/Resources/en_US
+/.classpath
+/.project
+/.settings
+/target
 /Setup/JavaPOS
 /Setup/javaComm
 /Setup/RxTx
 /Setup/MySQL JDBC
+/Setup/SQL Server JDBC
 
