@@ -81,15 +81,15 @@ Can be used as a base to a new Java GUI application.</description>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>mysql</groupId>
+			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
-			<version>9.6.0</version>
+			<version>9.7.0</version>
       <scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>sqlserver</groupId>
-			<artifactId>mssql-jdbc.jre11</artifactId>
-			<version>13.4.0</version>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<version>13.4.0.jre11</version>
       <scope>runtime</scope>
 		</dependency>
 	</dependencies>

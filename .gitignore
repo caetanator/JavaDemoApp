@@ -1,12 +1,17 @@
 /.vs
 /.vscode
 /.classpath
+/.git
+/.github
 /.project
 /.settings
 /target
 /Setup/JavaPOS
-/Setup/javaComm
+/Setup/Java Communications
+/Setup/JavaBeans Activation Framework
+/Setup/JavaMail
 /Setup/RxTx
+/Setup/IBM jt400
 /Setup/MySQL JDBC
 /Setup/SQL Server JDBC
 
