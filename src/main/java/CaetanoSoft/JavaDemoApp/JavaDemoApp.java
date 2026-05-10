@@ -28,6 +28,7 @@
 //          along with CaetanoSoft.JavaDemoApp. If not, see
 //          <https://www.gnu.org/licenses/gpl-3.0.html>.
 //******************************************************************************
+
 package CaetanoSoft.JavaDemoApp;
 
 import java.awt.*;
@@ -78,26 +79,27 @@ import CaetanoSoft.Utilities.UI.SplashScreenManager.SplashScreenManager;
  * <p>
  * </p>
  * Usage:
- * <ul>
- * <li>java -jar JavaDemoApp.jar [-h]</li>
- * <li>&nbsp;</li>
- * <li>-h: Prints this help screen and exit</li>
+ * <ul style="list-style-type:none;">
+ *   <li>java -jar JavaDemoApp.jar [-h]</li>
+ *   <li>&nbsp</li>
+ *   <li>-h: Prints this help screen and exit;</li>
+ *   <li>-di: Prints the debug information and exit.</li>
  * </ul>
  * <p>
  * </p>
  * Returned Error Codes:
  * <ul>
- * <li> 0: OK</li>
- * <li>-1: Error: Unhandled Java exception</li>
- * <li> 1: Error: Invalid number of parameters</li>
- * <li> 2: Error: Invalid parameter</li>
- * <li> 3: Error: Duplicated parameter</li>
- * <li> 4: Error: Configuration file not found or invalid</li>
- * <li> 5: Error: Invalid or non-existent input file</li>
- * <li> 6: Error: Invalid or non-existent output file</li>
- * <li> 7: Error: Invalid database connection or operation</li>
- * <li> 8: Error: Invalid server IP/Name</li>
- * <li> 9: Error: Invalid TCP/UDP service port</li>
+ *   <li> 0: OK;</li>
+ *   <li> 1: Error: Invalid number of parameters<;/li>
+ *   <li> 2: Error: Invalid parameter;</li>
+ *   <li> 3: Error: Duplicated parameter;</li>
+ *   <li> 4: Error: Configuration file not found or invalid;</li>
+ *   <li> 5: Error: Invalid or non-existent input file;</li>
+ *   <li> 6: Error: Invalid or non-existent output file;</li>
+ *   <li> 7: Error: Invalid database connection or operation;</li>
+ *   <li> 8: Error: Invalid server IP/Name;</li>
+ *   <li> 9: Error: Invalid TCP/UDP service port;</li>
+ *   <li>-1: Error: Unhandled Java exception.</li>
  * </ul>
  *
  * @author José Caetano Silva
@@ -947,7 +949,6 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
     System.out.println("");
     System.out.println("Returned Error Codes:");
     System.out.println("\t  0: OK");
-    System.out.println("\t -1: Error: Java Exception");
     System.out.println("\t  1: Error: Invalid number of parameters");
     System.out.println("\t  2: Error: Invalid parameter");
     System.out.println("\t  3: Error: Duplicated parameter");
@@ -957,6 +958,7 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
     System.out.println("\t  7: Error: Invalid database connection or operation");
     System.out.println("\t  8: Error: Invalid server IP/Name");
     System.out.println("\t  9: Error: Invalid TCP/UDP service port");
+    System.out.println("\t -1: Error: Java Exception");
     System.out.println("");
 
     if (m_objLogger != null) {
@@ -984,10 +986,10 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
     System.out.println("\tBug Report URL: \"" + System.getProperty("java.vendor.url.bug") + "\"");
     System.out.println("\tInstallation Directory: \"" + System.getProperty("java.home") + "\"");
     System.out.println("\tLibrary Directory: \"" + System.getProperty("sun.boot.library.path") + "\"");
-    System.out.println("\tClass Path: \"" + System.getProperty("java.class.path") + "\"");
     System.out.println("\tJNU String Encoding: " + System.getProperty("sun.jnu.encoding"));
     System.out.println("Java Application Information:");
     System.out.println("\tCommand Line: \"" + System.getProperty("sun.java.command") + "\"");
+    System.out.println("\tClass Path: \"" + System.getProperty("java.class.path") + "\"");
     System.out.println("\tWorking Directory: \"" + System.getProperty("user.dir") + "\"");
     System.out.println("\tTemp Directory: \"" + System.getProperty("java.io.tmpdir") + "\"");
     System.out.println("\tConfiguration File: \"" + m_strConfigFile + "\"");
@@ -1020,7 +1022,9 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
     System.out.println("-----------------------------------------");
     System.out.println("Java VM Properties:");
     Properties properties = System.getProperties();
-    properties.forEach((k, v) -> System.out.println(k + ": '" + v + "'"));
+    properties.forEach((k, v) -> System.out.println(k + ": '" + 
+                                      ((k=="line.separator") ? StringUtils.escapeString(v.toString()) : v) + 
+                                      "'"));
     System.out.println("");
 
     System.out.println("-----------------------------------------");
@@ -1139,7 +1143,8 @@ public class JavaDemoApp extends JFrame implements WindowListener, ActionListene
   }
 
   /**
-   *
+   * Reads the program's configuration file.
+   * 
    * @param strConfigFile Configuration file to be read
    * @throws FileNotFoundException
    * @throws IOException
